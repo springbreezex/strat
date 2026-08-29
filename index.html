@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地方的哈魯不想讓你知道的攻略整合站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0b0e1a;
+    --surface: #131829;
+    --surface-2: #1a2038;
+    --surface-3: #212847;
+    --border: rgba(226, 232, 255, 0.09);
+    --text: #eef0f8;
+    --text-muted: #9aa2c0;
+    --accent: #e0b454;
+    --accent-strong: #f2c96b;
+    --accent-teal: #5fd4c4;
+    --accent-teal-strong: #7ee6d7;
+    --danger: #ef7a7a;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --topbar-h: 56px;
+    --sidebar-w: 280px;
+    --font-display: 'Cinzel', 'Noto Serif TC', serif;
+    --font-body: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  }
+
+  body.light{
+    --bg: #f4f3ee;
+    --surface: #ffffff;
+    --surface-2: #f0eee6;
+    --surface-3: #e9e6da;
+    --border: rgba(20, 22, 40, 0.09);
+    --text: #201f2b;
+    --text-muted: #64607a;
+    --accent: #b3781b;
+    --accent-strong: #9c6512;
+    --accent-teal: #0e8f82;
+    --accent-teal-strong: #0b7469;
+    --danger: #c74848;
+    --shadow: 0 10px 24px rgba(30,25,10,0.08);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(1100px 520px at 85% -10%, rgba(95,212,196,0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(224,180,84,0.07), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    transition: background 0.25s ease, color 0.25s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--accent-teal); }
+  a:hover{ color: var(--accent-teal-strong); }
+
+  :focus-visible{
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button, [role="button"]{ font-family: inherit; }
+
+  .app{
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ---------- Mobile topbar ---------- */
+  #mobile-topbar{
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--topbar-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    z-index: 1000;
+  }
+  #menu-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  #menu-btn svg{ width: 18px; height: 18px; stroke: var(--text); }
+  #mobile-title{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.3;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #mobile-theme-btn{
+    margin-left: auto;
+    width: 38px; height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  #mobile-theme-btn svg{ width: 18px; height: 18px; stroke: var(--accent); }
+
+  #backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(4,6,14,0.55);
+    z-index: 900;
+  }
+  #backdrop.show{ display: block; }
+
+  /* ---------- Sidebar ---------- */
+  #sidebar{
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .sidebar-brand{
+    padding: 22px 18px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-brand-eyebrow{
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-brand-title{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16.5px;
+    line-height: 1.45;
+    cursor: pointer;
+  }
+  .sidebar-brand-title:hover{ color: var(--accent-strong); }
+
+  .sidebar-search{
+    padding: 14px 14px 8px;
+  }
+  .sidebar-search-box{
+    position: relative;
+  }
+  .sidebar-search input{
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px 9px 32px;
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+  .sidebar-search input::placeholder{ color: var(--text-muted); }
+  .sidebar-search svg{
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    width: 15px; height: 15px;
+    stroke: var(--text-muted);
+    pointer-events: none;
+  }
+
+  #fightList{
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 12px 12px;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  #fightList::-webkit-scrollbar{ width: 8px; }
+  #fightList::-webkit-scrollbar-thumb{ background: var(--surface-3); border-radius: 8px; }
+
+  .fight-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 12px;
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    border: 1px solid transparent;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .fight-item:hover{ background: var(--surface-3); transform: translateX(2px); }
+  .fight-item.active{
+    background: linear-gradient(135deg, rgba(224,180,84,0.16), rgba(95,212,196,0.10));
+    border-color: rgba(224,180,84,0.4);
+  }
+  .fight-item-dot{
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(95,212,196,0.15);
+  }
+  .fight-item.active .fight-item-dot{ background: var(--accent); box-shadow: 0 0 0 3px rgba(224,180,84,0.18); }
+  .fight-item-text{
+    font-size: 13.5px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .fight-empty{
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 18px 8px;
+  }
+
+  .sidebar-bottom{
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .control-box{
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s ease;
+  }
+  .control-box:hover{ background: var(--surface-3); }
+  .control-box svg{ width: 16px; height: 16px; stroke: var(--accent); flex-shrink: 0; }
+  .sidebar-credit{
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    padding-top: 2px;
+  }
+
+  /* ---------- Main ---------- */
+  #main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .content-header{
+    padding: 28px 34px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breadcrumb{
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .breadcrumb .crumb-accent{ color: var(--accent-teal); }
+  #fight-title{
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+  }
+  #fight-desc{
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 860px;
+  }
+  #fight-desc h2{
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--accent);
+    margin: 14px 0 6px;
+    font-weight: 600;
+  }
+  #fight-desc img{ max-width: 100%; border-radius: var(--radius-sm); margin: 8px 0; }
+
+  /* Phase rail */
+  .phase-rail-wrap{
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    overflow-x: auto;
+  }
+  .phase-rail-wrap::-webkit-scrollbar{ height: 6px; }
+  .phase-rail{
+    display: flex;
+    align-items: center;
+    min-width: max-content;
+  }
+  .phase-tab{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    padding: 6px 14px 6px 6px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  .phase-tab:hover{ background: var(--surface-2); }
+  .phase-num{
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .phase-label{
+    font-size: 13.5px;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+  .phase-tab.active .phase-num{
+    background: var(--accent);
+    color: #1a1305;
+  }
+  .phase-tab.active .phase-label{ color: var(--text); font-weight: 700; }
+  .phase-connector{
+    width: 26px;
+    height: 2px;
+    background: var(--border);
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+
+  /* Strategy chooser */
+  .strategy-bar{
+    padding: 14px 28px;
+    background: var(--surface);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .strategy-btn{
+    padding: 8px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+  }
+  .strategy-btn:hover{ color: var(--text); border-color: rgba(95,212,196,0.4); }
+  .strategy-btn.active{
+    background: var(--accent-teal);
+    color: #06251f;
+    border-color: var(--accent-teal);
+  }
+
+  /* Content */
+  .content-panel{
+    padding: 26px 34px 60px;
+    flex: 1;
+  }
+  #content{
+    max-width: 980px;
+    font-size: 15px;
+    line-height: 1.85;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn{ from{ opacity: 0; transform: translateY(4px); } to{ opacity: 1; transform: translateY(0); } }
+
+  #content p{ margin: 0 0 14px; }
+  #content h2{
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 22px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  #content h2:first-child{ margin-top: 0; }
+  #content b{ color: var(--accent-teal-strong); font-weight: 700; }
+  #content img{ max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+  #content > img{ margin: 10px 0 16px; box-shadow: var(--shadow); }
+  #content a{ font-weight: 600; text-decoration: underline; text-decoration-color: rgba(95,212,196,0.4); text-underline-offset: 3px; }
+
+  .table-wrap{
+    overflow-x: auto;
+    margin: 4px 0 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table.table-style{
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+  }
+  .table-style td, .table-style th{
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .table-style th{
+    background: var(--surface-2);
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .table-style tr:nth-child(even) td{ background: rgba(255,255,255,0.015); }
+  .table-style h2{
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .table-style img{ margin: 0; }
+
+  .empty-state{
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 860px){
+    body{ flex-direction: column; }
+    #mobile-topbar{ display: flex; }
+    #sidebar{
+      position: fixed;
+      top: 0; bottom: 0; left: 0;
+      transform: translateX(-100%);
+      width: min(82vw, 300px);
+      z-index: 950;
+      box-shadow: var(--shadow);
+      padding-top: var(--topbar-h);
+      transition: transform 0.25s ease;
+    }
+    #sidebar.open{ transform: translateX(0); }
+    .app{ display: block; }
+    #main{ margin-top: var(--topbar-h); }
+    .content-header{ padding: 20px 18px 14px; }
+    #fight-title{ font-size: 21px; }
+    .phase-rail-wrap{ padding: 12px 16px; }
+    .strategy-bar{ padding: 12px 16px; }
+    .content-panel{ padding: 18px 16px 44px; }
+    #content{ font-size: 14.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="mobile-topbar">
+  <div id="menu-btn" onclick="toggleMenu()" role="button" aria-label="開啟選單" tabindex="0">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </div>
+  <div id="mobile-title" onclick="goHome()">地方的哈魯不想讓你知道的攻略整合站</div>
+  <div id="mobile-theme-btn" onclick="toggleTheme()" role="button" aria-label="切換主題" tabindex="0">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </div>
+</div>
+
+<div id="backdrop" onclick="closeMenu()"></div>
+
+<div class="app">
+  <div id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-eyebrow">FFXIV · Ultimate Notes</div>
+      <div class="sidebar-brand-title" onclick="goHome()">地方的哈魯不想讓你知道的攻略整合站</div>
+    </div>
+    <div class="sidebar-search">
+      <div class="sidebar-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="fightSearch" type="text" placeholder="搜尋副本名稱..." oninput="renderFights()" aria-label="搜尋副本">
+      </div>
+    </div>
+    <nav id="fightList" aria-label="副本清單"></nav>
+    <div class="sidebar-bottom">
+      <div class="control-box" id="themeToggle" onclick="toggleTheme()" role="button" tabindex="0">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="themeLabel">切換為淺色模式</span>
+      </div>
+      <div class="sidebar-credit">僅供親友參考 · 內容持續更新中</div>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="content-header">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div id="fight-title">地方的哈魯不想讓你知道的攻略整合站</div>
+      <div id="fight-desc">此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
+      筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o</div>
+    </div>
+    <div class="phase-rail-wrap">
+      <div id="phase-tabs" class="phase-rail"></div>
+    </div>
+    <div id="strategy-buttons" class="strategy-bar"></div>
+    <div class="content-panel">
+      <div id="content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const replacementDict = {
+  "{tank_icon}": '<img src="tank.png" style="height:20px;vertical-align:middle;">',
+  "{heal_icon}": '<img src="heal.png" style="height:20px;vertical-align:middle;">',
+  "{job:mt}": '<img src="assets/images/jobs/war.png" style="height:20px;vertical-align:middle;">',
+  "{job:st}": '<img src="assets/images/jobs/pld.png" style="height:20px;vertical-align:middle;">',
+  "{job:h1}": '<img src="assets/images/jobs/ast.png" style="height:20px;vertical-align:middle;">',
+  "{job:h2}": '<img src="assets/images/jobs/sge.png" style="height:20px;vertical-align:middle;">',
+  "{job:d1}": '<img src="assets/images/jobs/mnk.png" style="height:20px;vertical-align:middle;">',
+  "{job:d2}": '<img src="assets/images/jobs/sam.png" style="height:20px;vertical-align:middle;">',
+  "{job:d3}": '<img src="assets/images/jobs/dnc.png" style="height:20px;vertical-align:middle;">',
+  "{job:d4}": '<img src="assets/images/jobs/smn.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:a}": '<img src="assets/images/waymark/waymarkA.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:b}": '<img src="assets/images/waymark/waymarkB.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:c}": '<img src="assets/images/waymark/waymarkC.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:d}": '<img src="assets/images/waymark/waymarkD.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:1}": '<img src="assets/images/waymark/waymark1.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:2}": '<img src="assets/images/waymark/waymark2.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:3}": '<img src="assets/images/waymark/waymark3.png" style="height:20px;vertical-align:middle;">',
+  "{waymark:4}": '<img src="assets/images/waymark/waymark4.png" style="height:20px;vertical-align:middle;">',
+  "{alpha_debuff}": '<img src=https://i.imgur.com/wnNxJUR.png" style="height:20px;vertical-align:middle;">',
+  "{alpha_need_debuff}": '<img src=https://i.imgur.com/bux1tzu.png" style="height:20px;vertical-align:middle;">',
+  "{beta_debuff}": '<img src=https://i.imgur.com/jqyaiEF.png" style="height:20px;vertical-align:middle;">',
+  "{beta_need_debuff}": '<img src=https://i.imgur.com/zppLTuZ.png" style="height:20px;vertical-align:middle;">',
+  "{gamma_debuff}": '<img src=https://i.imgur.com/ad1o0Rw.png" style="height:20px;vertical-align:middle;">',
+  "{gamma_need_debuff}": '<img src=https://i.imgur.com/FJJ7RBM.png" style="height:20px;vertical-align:middle;">',
+  "{delta_debuff}": '<img src="https://i.imgur.com/s5V8hHw.png" style="height:20px;vertical-align:middle;">',
+  "{delta_need_debuff}": '<img src=https://i.imgur.com/NrjaST0.png" style="height:20px;vertical-align:middle;">',
+  "{water_debuff}": '<img src=https://i.imgur.com/e2JOj2W.png" style="height:20px;vertical-align:middle;">',
+  "{water_weak_debuff}": '<img src=https://i.imgur.com/ECoI4NP.png" style="height:20px;vertical-align:middle;">',
+  "{lightning_debuff}": '<img src=https://i.imgur.com/OwUySCI.png" style="height:20px;vertical-align:middle;">',
+  "{lightning_weak_debuff}": '<img src=https://i.imgur.com/GCX7hYE.png" style="height:20px;vertical-align:middle;">',
+};
+
+function applyReplacements(html) {
+  let result = html;
+  for (const key in replacementDict) {
+    result = result.split(key).join(replacementDict[key]);
+  }
+  return result;
+}
+
+let data = {
+  "TEA 亞歷山大絕境戰（絕亞）": {
+    description: `
+<p><h2>前言:</h2> </p>
+<p>本攻略含有美服，日服，陸服打法。<b>P2根據不同攻略有完全不一樣的站位。</b>筆者本人將個人比較喜好（固團用）的打法放在預設攻略上，如對其他打法感興趣請手動選擇查閱</p>
+<p>選擇攻略的基準為練習成本最低化（較高容錯及有模擬器的打法優先）</p>
+<p>如P1及P2跟此打法，筆者會建議將黑魔或處理機製較弱隊員分配至D1位置，需要移動或處理機制的工作較少。</p>
+<p>圖示配置為: MT {job:mt} ST {job:st} H1 {job:h1} H2 {job:h2} D1 {job:d1} D2 {job:d2} D3 {job:d3} D4 {job:d4} </p>
+<p><h2>預設攻略用場標:</h2></p>
+<img src="assets/images/fight/ult-tea/p1-waymark.png" width=300>
+<br>
+<p>{waymark:a}:北邊 {waymark:b}:P2放水用 {waymark:c}:南邊 {waymark:d}:西邊 {waymark:1}{waymark:3}{waymark:4}:P4地火用 {waymark:2}:P4未來觀測用</p>
+`,
+    phases: {
+      "P1 - 有生命活水": {
+        strategies: {
+          "日野無視(小優化)": {
+            content: `
+<p>先說跟普通日野無視的差異，大致上站位一樣，只是用讓副坦取代位置減輕補師的工作</p>
+<p>
+<table class="table-style">
+<tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td><h2>1</h2></td><td>MT {job:mt}以嘲諷開怪將王面向拉去北邊，<br>使用少量減傷應對第一次讀條 【流體擺動】<br><br>其餘人存資源，將團輔及資源延後至00:20左右等待有生命活水分裂</td><td><img src="assets/images/fight/ult-tea/p1-slide1.png" width=400></td></tr>
+<tr><td><h2>2</h2></td><td>有生命活水讀條【傾瀉】結束後，全員可以開始爆發(視乎隊伍喝爆發藥)<br><br>分裂後，會在隨機三個正點生成水龍卷及小怪 <b>活水之手</b>，<br>MT{job:mt}將<b>有生命活水</b>拉至沒有水龍卷的一側（南方）。<br>ST{job:st}以坦姿+數個GCD將 <b>活水之手</b> 拉仇並拉向東北，<br>同時可以對<b>活水之手</b>進行頭標方便後續DPS下減傷<br><br>全員無視 <b>活水之手</b> 的血量，並集火 <b>有生命活水</b>。 </td><td><img src="assets/images/fight/ult-tea/p1-slide2.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>D3{job:d3}及D4{job:d4}可以如圖站位，預備引導可視扇形AOE<br>MT{job:mt}嘲諷CD轉好的時刻正常會是<b>活水之手</b>發光的時候，便可將<b>活水之手</b>拉一起<br><br>ST{job:st}可以以遠程傷害對<b>有生命活水</b>進行傷害，直至引導完可視扇形AOE才可以突進回到人群<br></td><td><img src="assets/images/fight/ult-tea/p1-slide3.png" width=400></td></tr>
+<tr><td><h2>4</h2></td><td>當可視扇形AOE出現，D3{job:d3}及D4{job:d4}可以走出範圍躲避，<br>ST{job:st}則可以突進回人群中繼續對<b>有生命活水</b>輸出<br>MT{job:mt}預備開<b>無敵</b>承受雙體的扇形對坦死刑<br><br>當可視扇形AOE造成完傷害後，會有第二次不可視扇形AOE傷害，<br>隨即會有一次來自<b>活水之手</b>的<b>極大群傷【苦痛之手】</b>。<br>D2{job:d2}及D4{job:d4}可以在看到可視扇形AOE後，即可對<b>活水之手</b>使用牽制及昏亂。<br><br>小建議：<br>如ST{job:st}先前有對<b>活水之手</b>標記頭標，D2{job:d2}及D4{job:d4}便可以巨集使用牽制，<br>則不用切換目標下減傷。<br>巨集指令範例： /ac 牽制 &lt;cross> </td><td><img src="assets/images/fight/ult-tea/p1-slide4.png" width=400></td></tr>
+<tr><td><h2>5</h2></td><td>當可視扇形AOE出現同時，會生成四隻小怪。<br>每隻小怪會同時造成圓形AOE，每個AOE會造成少量傷害，但同時吃到兩個AOE就會即死。<br>同時第一個對小怪造成傷害的玩家會與小怪連線，小怪便會跟隨玩家移動，<br>本攻略屬於無視小怪將不會對小怪機制作更多解釋，但請盡量避免AOE或傷害濺射到小怪身上。<br>如果不小心拉到小怪，<b>不要將小怪打死或拉至到王或手附近</b><br><br>當可視扇形AOE結束後，D3{job:d3}及D4{job:d4}需要回到原本位置誘導不可視扇形AOE，<br>MT{job:mt}開啟無敵應對死刑並使用雪仇</td><td><img src="assets/images/fight/ult-tea/p1-slide5.png" width=400></td></tr>
+<tr><td><h2>6</h2></td><td><b>有生命活水</b>及<b>活水之手</b>會對MT{job:mt}進行扇形死刑，<br>其他人確保不要站到雙體面前誤吃死刑。<br>但同時不要站太接近場中，否則會吃到兩個小怪的AOE。<br>圖中綠色位置為安全區域<br><br>D3{job:d3}開啟群減應對接下來的不可視扇形AOE及<b>極大群傷【苦痛之手】</b>。</td><td><img src="assets/images/fight/ult-tea/p1-slide6.png" width=400></td></tr>
+<tr><td><h2>7</h2></td><td>不可視扇形AOE屬於不能被躲避的傷害，確保D3{job:d3}及D4{job:d4}將東西兩側的水龍卷如圖誘導，<br>正常情況每人都會吃到一個或少於一個的不可視扇形AOE。<br><br>不可視扇形AOE<b>造成傷害後，</b><br>H1{job:h1}將全員血量盡量抬滿，<br>H2{job:h2}開啟群盾及減傷，<br>MT{job:mt}及ST{job:st}開啟特色群減或群盾，並可視乎情況給D4{job:d4}單體減。<br><br>由於群盾及減傷是以施法者位置為中心擴散，D3{job:d3}及D4{job:d4}在誘導完不可視扇形後可盡快靠近人群吃減傷。</td><td><img src="assets/images/fight/ult-tea/p1-slide7.png" width=400></td></tr>
+<tr><td><h2>8</h2></td><td><b>極大群傷【苦痛之手】</b>後，無人死亡即基本上沒問題！<br>之後其中兩個水龍捲會生成兩個<b>小水球</b>並朝王當時的位置移動，<br>如果玩家或<b>有生命活水</b>或<b>活水之手</b>接觸到即團滅。<br>MT{job:mt}將雙體如圖拉至西南躲避水球，<br>拉至目的地後ST{job:st}將<b>活水之手</b>挑釁並面向朝內，<br>MT{job:mt}及ST{job:st}開啟少量減傷應對各自的扇形死刑。<br>其餘人如圖站避免吃到扇形。<br><br>如隊伍組成需要，D3{job:d3}需用1個GCD或任意單體傷害將靠近西南側小怪拉至東南側。<br>筆者當時的組成並沒有此需要。</td><td><img src="assets/images/fight/ult-tea/p1-slide8.png" width=400></td></tr>
+</table>
+<p> <a href="https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s">參考影片: https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s </a></p>
+`
+          },
+          "日野無視": {
+            content: `
+<p> <a href="https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s">參考影片: https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s </a></p>
+`
+          },
+          "正攻": {
+            content: `
+<p>正攻太麻煩了_(:з」∠)_</p>
+<p></p>
+`
+          }
+        }
+      },
+      "P1.5 - 麻將運動會": {
+        strategies: {
+          "1211": {
+            content: `
+<p>模擬器: <a href="https://drive.google.com/file/d/1sdo02A5GbNPA9B4HN-NOt-vnTPyv2elH/view">GoogleDrive</a></p>
+<p>1211各視角: <a href="https://www.bilibili.com/video/BV1eE411x7tE/?spm_id_from=333.337.search-card.all.click&vd_source=b5ddcffb7612478b70e2fcfdf8dba51b">B站影片</a></p>
+<p></p>
+`
+          },
+          "1256": {
+            content: `
+<p>筆者喜歡1256，因為不用算時間點，看到AOE炸了就走進去而已。對會抓timing的團或許練習成本較低。缺點就是八個人都要會找起始點。</p>
+<p>模擬器: <a href="https://dangermomentum.itch.io/1256-sim">https://dangermomentum.itch.io/1256-sim</a></p>
+<br><p>注意: 上面模擬器是根據國際服(美服/OCE/Tuufless)的1256，與陸服的1256起跑點好像是不一樣的。
+`
+          },
+        }
+      },
+      "P2 - BJCC 殘暴正義號&巡航驅逐者": {
+        strategies: {
+          "NAUR美服打法": {
+            content: `
+<p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
+<p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1y8m6GqlgfKKREHOe8z8k-Bo4rdf5hqDSxa-9znjR3Mc/edit?usp=sharing"> PPT鏈接</a>
+<br>
+<br>
+<br>
+<p><b>後話</b></p>
+<p>筆者是先打過SEP改再打NAUR的，Tuufless沒打過只看過。先說筆者個人心得：</p>
+<p> tl;dr NAUR個人覺得整體舒服很多，也是三個裡面最好的一個打法。</p>
+<p><b>對比SEP改的優點：</b></p>
+<p>- 站位和走位上容錯較高，比較少出現交叉走位導致撞車情況出現</p>
+<p>- 對D1 D2 D4友善，可以走少很多路而且近戰基本不會掉uptime</p>
+<p>- 水電處理上DPS不用看那麼多，特別兩個近D不用負責大部分的水分攤</p>
+<p><b>缺點：</b></p>
+<p>- 奶媽需要多走一點路（但筆者覺得其實奶媽跑法固定，而且傳毒D找奶，所以這也不怎麼影響）</p>
+<br>
+<br>
+<p>{alpha_debuff}{alpha_need_debuff}{beta_debuff}{beta_need_debuff}{delta_debuff}{delta_need_debuff}{gamma_debuff}{gamma_need_debuff}{water_debuff}{water_weak_debuff}{lightning_debuff}{lightning_weak_debuff}</p>
+`
+          },
+          "SEP改": {
+            content: `
+<p><b>外部鏈接: </b><a href="https://www.bilibili.com/video/BV1Hd4y1S7yg/?spm_id_from=333.337.search-card.all.click&vd_source=b5ddcffb7612478b70e2fcfdf8dba51b">B站</a></p>
+`
+          },
+          "Tuufless": {
+            content: `
+<p>筆者沒打過這個，看起來有點複雜先來說個優劣點</p>
+<p><b>優點:</b> 雙體拉一起，近戰爽Uptime，濺射傷害不浪費</p>
+<p><b>缺點:</b> 有點虐補師要放地雷，站位看起來蠻擠的，就只看的話筆者覺得學習成本較其餘兩者高所以就沒特別練了</p>
+<p><b>外部鏈接: </b><a href="https://ffxiv.tuufless.com/elemental/tea/02b_bjcc/">https://ffxiv.tuufless.com/elemental/tea/02b_bjcc/</a></p>
+`
+          }
+        }
+      },
+      "P3 - 至尊亞歷山大": {
+        strategies: {
+          "NAUR美服打法": {
+            content: `
+<p><b>好用鏈接:</b></p>
+<p><b>模擬器:</b> <a href="https://dangermomentum.itch.io/1256-sim"> 時停/時空潛行/次元斷絕的模擬器(左上角選擇對應機制)</a>
+<br>
+<p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
+<p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1gpD6p0j41FkeE2JUVxU4k6LxvQLLNrKGfgM0-DT1AFw/edit?usp=sharing"> PPT鏈接</a>
+<p><b>次元斷絕各數字POV:</b> <a href="https://www.youtube.com/watch?v=FXuUVe_-KCE"> Youtube鏈接</a>
+<br>
+<br>
+<br>
+<p><b>後話</b></p>
+<p>基本上除了次元斷絕大部分機製處理跟其他攻略差不多。</p>
+<br>
+<p>這份PPT原檔不是筆者寫的，是從某個群看到拉出來，再針對打法修改及對細節部分說加以說明。</p>
+<p>筆者只是整合，但不知道原作者是誰，以免日後有被燒風險先說好了歡迎聯絡本人下Credit。</p>
+<p>真有空筆者會重新把內容重新寫到這邊就是了。</p>
+`
+          },
+          "陸服打法": {
+            content: `
+<p>先不更懶了</p>
+`
+          },
+        }
+      },
+      "P4 - 完美亞歷山大": {
+        strategies: {
+          "NAUR美服打法": {
+            content: `
+<p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
+<p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1XvPVWFjWNHWgyJ5yOP3WTPpYSfbTuqxs0hH5SzzRXRw/edit?usp=sharing"> PPT鏈接</a>
+<p><b>英文但寫得蠻清晰的PPT:</b> <a href="https://docs.google.com/presentation/d/1z8UQlF71E9uJgeFoHZ-a1Vy07W5Cl_34ag_kXbCkhtU/edit?slide=id.g1374817a1e2_0_334#slide=id.g1374817a1e2_0_334"> PPT鏈接</a>
+<br>
+<p><b>未來觀測α各POV:</b> <a href="https://youtu.be/Mv1DzCD3AQE?si=JhtM5VNDmGvsgWez"> Youtube鏈接</a>
+<p><b>未來觀測β各POV:</b> <a href="https://youtu.be/1is3Vjk_X4U?si=LpMYownyN_zQDzzi"> Youtube鏈接</a>
+`
+          },
+          "陸服打法": {
+            content: `
+<p>先不更懶了</p>
+`
+          },
+        }
+      },
+    }
+  },
+  "TOP 歐米茄絕境驗證戰（絕歐）": {
+    description: "待更",
+    phases: {
+      "P1 - 待更": {
+        strategies: {
+          "待更": {
+            content: `
+<p>待更</p>
+`
+          }
+        }
+      },
+    }
+  },
+};
+
+let currentFight = null;
+let currentPhase = null;
+let currentStrategy = null;
+
+const DEFAULT_TITLE = '地方的哈魯不想讓你知道的攻略整合站';
+const DEFAULT_DESC = `此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
+筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o`;
+
+function renderFights() {
+  const container = document.getElementById('fightList');
+  const query = (document.getElementById('fightSearch').value || '').trim().toLowerCase();
+  container.innerHTML = '';
+
+  const names = Object.keys(data).filter(name => name.toLowerCase().includes(query));
+
+  if (names.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'fight-empty';
+    empty.innerText = '找不到符合的副本';
+    container.appendChild(empty);
+    return;
+  }
+
+  names.forEach(fight => {
+    const div = document.createElement('div');
+    div.className = 'fight-item' + (fight === currentFight ? ' active' : '');
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+
+    const dot = document.createElement('span');
+    dot.className = 'fight-item-dot';
+
+    const text = document.createElement('span');
+    text.className = 'fight-item-text';
+    text.innerText = fight;
+
+    div.appendChild(dot);
+    div.appendChild(text);
+
+    const activate = () => { selectFight(fight); closeMenu(); };
+    div.onclick = activate;
+    div.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
+
+    container.appendChild(div);
+  });
+}
+
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  if (!currentFight) { bc.innerHTML = ''; return; }
+  let parts = [`<span onclick="goHome()" style="cursor:pointer;">副本列表</span>`, `<span>›</span>`, `<span class="crumb-accent">${currentFight}</span>`];
+  if (currentPhase && Object.keys(data[currentFight].phases).length > 1) {
+    parts.push('<span>›</span>');
+    parts.push(`<span class="crumb-accent">${currentPhase}</span>`);
+  }
+  bc.innerHTML = parts.join(' ');
+}
+
+function goHome() {
+  currentFight = null;
+  currentPhase = null;
+  currentStrategy = null;
+  document.getElementById('fight-title').innerText = DEFAULT_TITLE;
+  document.getElementById('fight-desc').innerHTML = DEFAULT_DESC;
+  document.getElementById('phase-tabs').innerHTML = '';
+  document.getElementById('strategy-buttons').innerHTML = '';
+  document.getElementById('content').innerHTML = '';
+  updateBreadcrumb();
+  renderFights();
+  closeMenu();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectFight(fight) {
+  currentFight = fight;
+  document.getElementById('fight-title').innerText = fight;
+  document.getElementById('fight-desc').innerHTML = applyReplacements(data[fight].description) || '';
+  renderFights();
+  renderPhases();
+  updateBreadcrumb();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderPhases() {
+  const phaseTabs = document.getElementById('phase-tabs');
+  phaseTabs.innerHTML = '';
+  const phases = data[currentFight].phases;
+  const keys = Object.keys(phases);
+
+  if (keys.length <= 1) {
+    currentPhase = keys[0];
+    renderStrategies();
+    updateBreadcrumb();
+    return;
+  }
+
+  keys.forEach((phase, idx) => {
+    if (idx > 0) {
+      const connector = document.createElement('div');
+      connector.className = 'phase-connector';
+      phaseTabs.appendChild(connector);
+    }
+
+    const tab = document.createElement('div');
+    tab.className = 'phase-tab';
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('tabindex', '0');
+
+    const num = document.createElement('span');
+    num.className = 'phase-num';
+    num.innerText = idx + 1;
+
+    const label = document.createElement('span');
+    label.className = 'phase-label';
+    label.innerText = phase;
+
+    tab.appendChild(num);
+    tab.appendChild(label);
+
+    const activate = () => {
+      currentPhase = phase;
+      renderStrategies();
+      document.querySelectorAll('.phase-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      updateBreadcrumb();
+    };
+    tab.onclick = activate;
+    tab.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
+
+    phaseTabs.appendChild(tab);
+  });
+
+  currentPhase = keys[0];
+  const firstTab = phaseTabs.querySelector('.phase-tab');
+  if (firstTab) firstTab.classList.add('active');
+  renderStrategies();
+}
+
+function renderStrategies() {
+  const container = document.getElementById('strategy-buttons');
+  container.innerHTML = '';
+  const strategies = data[currentFight].phases[currentPhase].strategies;
+
+  Object.keys(strategies).forEach(name => {
+    const btn = document.createElement('div');
+    btn.className = 'strategy-btn';
+    btn.innerText = name;
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('tabindex', '0');
+    btn.onclick = () => showContent(name, btn);
+    btn.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showContent(name, btn); } };
+    container.appendChild(btn);
+  });
+
+  const first = Object.keys(strategies)[0];
+  if (first) {
+    const firstBtn = container.children[0];
+    showContent(first, firstBtn);
+  }
+}
+
+function showContent(name, btnElement) {
+  currentStrategy = name;
+  document.querySelectorAll('.strategy-btn').forEach(b => b.classList.remove('active'));
+  if (btnElement) btnElement.classList.add('active');
+
+  const contentDiv = document.getElementById('content');
+  let raw = data[currentFight].phases[currentPhase].strategies[name].content;
+  let html = applyReplacements(raw);
+  html = html.replace(/<table class="table-style">/g, '<div class="table-wrap"><table class="table-style">');
+  html = html.replace(/<\/table>/g, '</table></div>');
+  contentDiv.innerHTML = html;
+}
+
+function applyTheme(isLight) {
+  document.body.classList.toggle('light', isLight);
+  const label = document.getElementById('themeLabel');
+  const arcPath = 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z';
+  const sunPaths = `<circle cx="12" cy="12" r="4"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+  if (label) label.innerText = isLight ? '切換為深色模式' : '切換為淺色模式';
+  document.querySelectorAll('#themeIcon, #mobile-theme-btn svg').forEach(icon => {
+    icon.innerHTML = isLight ? sunPaths : `<path d="${arcPath}"></path>`;
+  });
+}
+
+function toggleTheme() {
+  const isLight = !document.body.classList.contains('light');
+  applyTheme(isLight);
+  try { localStorage.setItem('strat-theme', isLight ? 'light' : 'dark'); } catch (e) {}
+}
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('backdrop').classList.toggle('show');
+}
+
+function closeMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+(function init() {
+  let saved = null;
+  try { saved = localStorage.getItem('strat-theme'); } catch (e) {}
+  applyTheme(saved === 'light');
+  renderFights();
+})();
+</script>
+</body>
+</html>
