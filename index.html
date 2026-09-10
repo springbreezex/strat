@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>篝火閣</title>
+<title>地方的哈魯不想讓你知道的攻略整合站</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
@@ -106,12 +106,25 @@
     flex-shrink: 0;
   }
   #menu-btn svg{ width: 18px; height: 18px; stroke: var(--text); }
+  #mobile-title-row{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    overflow: hidden;
+    min-width: 0;
+  }
+  #mobile-title-row .brand-logo{
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+  }
   #mobile-title{
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
     line-height: 1.3;
-    cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -151,7 +164,7 @@
   }
 
   .sidebar-brand{
-    padding: 22px 18px 14px;
+    padding: 20px 18px 14px;
     border-bottom: 1px solid var(--border);
   }
   .sidebar-brand-eyebrow{
@@ -160,8 +173,38 @@
     letter-spacing: 2.5px;
     color: var(--accent);
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
+  .sidebar-brand-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .brand-logo{
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 3px rgba(224,180,84,0.08);
+  }
+  .sidebar-brand-name{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  .sidebar-brand-sub{
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+  .sidebar-brand-row:hover .sidebar-brand-name{ color: var(--accent-strong); }
   .sidebar-brand-title{
     font-family: var(--font-display);
     font-weight: 600;
@@ -428,7 +471,7 @@
   }
   #content h2:first-child{ margin-top: 0; }
   #content b{ color: var(--accent-teal-strong); font-weight: 700; }
-  #content img{ max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+  #content img{ max-width: 100%; height: auto; border-radius: var(--radius-sm); display: block; }
   #content > img{ margin: 10px 0 16px; box-shadow: var(--shadow); }
   #content a{ font-weight: 600; text-decoration: underline; text-decoration-color: rgba(95,212,196,0.4); text-underline-offset: 3px; }
 
@@ -507,12 +550,26 @@
 </style>
 </head>
 <body>
+<script>
+  // Prototype logo (inline flame/bonfire glyph) used as a fallback if
+  // assets/images/logo.png hasn't been added to the repo yet.
+  var PLACEHOLDER_LOGO = "data:image/svg+xml;utf8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">' +
+    '<rect width="48" height="48" rx="11" fill="#1a2038"/>' +
+    '<path d="M24 6c2 6-4 8-4 13 0 3 2 5 5 5s5-2.5 5-6c3 3 5 7 5 11 0 7.2-5.8 13-13 13S9 36.2 9 29c0-6 3-10 6-14 1.5 3 3 4 5 4 3 0 4-3 2-7 1 0 2 0 2-1-1-2-1-3 0-5z" ' +
+    'fill="#e0b454" stroke="#f2c96b" stroke-width="1"/>' +
+    '</svg>'
+  );
+</script>
 
 <div id="mobile-topbar">
   <div id="menu-btn" onclick="toggleMenu()" role="button" aria-label="開啟選單" tabindex="0">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
   </div>
-  <div id="mobile-title" onclick="goHome()">篝火閣</div>
+  <div id="mobile-title-row" onclick="goHome()">
+    <img class="brand-logo" src="assets/images/logo.png" alt="篝火閣" onerror="this.onerror=null;this.src=PLACEHOLDER_LOGO;">
+    <div id="mobile-title">篝火閣</div>
+  </div>
   <div id="mobile-theme-btn" onclick="toggleTheme()" role="button" aria-label="切換主題" tabindex="0">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
   </div>
@@ -523,8 +580,14 @@
 <div class="app">
   <div id="sidebar">
     <div class="sidebar-brand">
-      <div class="sidebar-brand-eyebrow">FFXIV · 哈魯的攻略書閣</div>
-      <div class="sidebar-brand-title" onclick="goHome()">篝火閣</div>
+      <div class="sidebar-brand-eyebrow">FFXIV · Ultimate Notes</div>
+      <div class="sidebar-brand-row" onclick="goHome()" role="button" tabindex="0" aria-label="回到首頁">
+        <img class="brand-logo" src="assets/images/logo.png" alt="篝火閣" onerror="this.onerror=null;this.src=PLACEHOLDER_LOGO;">
+        <div>
+          <div class="sidebar-brand-name">篝火閣</div>
+          <div class="sidebar-brand-sub">地方的哈魯不想讓你知道的攻略整合站</div>
+        </div>
+      </div>
     </div>
     <div class="sidebar-search">
       <div class="sidebar-search-box">
@@ -538,14 +601,14 @@
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         <span id="themeLabel">切換為淺色模式</span>
       </div>
-      <div class="sidebar-credit">僅供親友參考 · 內容不持續更新中</div>
+      <div class="sidebar-credit">僅供親友參考 · 內容持續更新中</div>
     </div>
   </div>
 
   <div id="main">
     <div class="content-header">
       <div class="breadcrumb" id="breadcrumb"></div>
-      <div id="fight-title">篝火閣 - 哈魯的攻略書閣</div>
+      <div id="fight-title">地方的哈魯不想讓你知道的攻略整合站</div>
       <div id="fight-desc">此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
       筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o</div>
     </div>
@@ -603,6 +666,7 @@ function applyReplacements(html) {
 
 let data = {
   "TEA 亞歷山大絕境戰（絕亞）": {
+    tag: "tea",
     description: `
 <p><h2>前言:</h2> </p>
 <p>本攻略含有美服，日服，陸服打法。<b>P2根據不同攻略有完全不一樣的站位。</b>筆者本人將個人比較喜好（固團用）的打法放在預設攻略上，如對其他打法感興趣請手動選擇查閱</p>
@@ -616,8 +680,10 @@ let data = {
 `,
     phases: {
       "P1 - 有生命活水": {
+        tag: "p1",
         strategies: {
           "日野無視(小優化)": {
+            tag: "mana-opt",
             content: `
 <p>先說跟普通日野無視的差異，大致上站位一樣，只是用讓副坦取代位置減輕補師的工作</p>
 <p>
@@ -636,11 +702,13 @@ let data = {
 `
           },
           "日野無視": {
+            tag: "mana",
             content: `
 <p> <a href="https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s">參考影片: https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s </a></p>
 `
           },
           "正攻": {
+            tag: "unused",
             content: `
 <p>正攻太麻煩了_(:з」∠)_</p>
 <p></p>
@@ -649,8 +717,10 @@ let data = {
         }
       },
       "P1.5 - 麻將運動會": {
+        tag: "p1-5",
         strategies: {
           "1211": {
+            tag: "1211",
             content: `
 <p>模擬器: <a href="https://drive.google.com/file/d/1sdo02A5GbNPA9B4HN-NOt-vnTPyv2elH/view">GoogleDrive</a></p>
 <p>1211各視角: <a href="https://www.bilibili.com/video/BV1eE411x7tE/?spm_id_from=333.337.search-card.all.click&vd_source=b5ddcffb7612478b70e2fcfdf8dba51b">B站影片</a></p>
@@ -658,6 +728,7 @@ let data = {
 `
           },
           "1256": {
+            tag: "1256",
             content: `
 <p>筆者喜歡1256，因為不用算時間點，看到AOE炸了就走進去而已。對會抓timing的團或許練習成本較低。缺點就是八個人都要會找起始點。</p>
 <p>模擬器: <a href="https://dangermomentum.itch.io/1256-sim">https://dangermomentum.itch.io/1256-sim</a></p>
@@ -667,8 +738,10 @@ let data = {
         }
       },
       "P2 - BJCC 殘暴正義號&巡航驅逐者": {
+        tag: "p2",
         strategies: {
           "NAUR美服打法": {
+            tag: "naur",
             content: `
 <p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
 <p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1y8m6GqlgfKKREHOe8z8k-Bo4rdf5hqDSxa-9znjR3Mc/edit?usp=sharing"> PPT鏈接</a>
@@ -690,11 +763,13 @@ let data = {
 `
           },
           "SEP改": {
+            tag: "sep",
             content: `
 <p><b>外部鏈接: </b><a href="https://www.bilibili.com/video/BV1Hd4y1S7yg/?spm_id_from=333.337.search-card.all.click&vd_source=b5ddcffb7612478b70e2fcfdf8dba51b">B站</a></p>
 `
           },
           "Tuufless": {
+            tag: "tuufless",
             content: `
 <p>筆者沒打過這個，看起來有點複雜先來說個優劣點</p>
 <p><b>優點:</b> 雙體拉一起，近戰爽Uptime，濺射傷害不浪費</p>
@@ -705,8 +780,10 @@ let data = {
         }
       },
       "P3 - 至尊亞歷山大": {
+        tag: "p3",
         strategies: {
           "NAUR美服打法": {
+            tag: "naur",
             content: `
 <p><b>好用鏈接:</b></p>
 <p><b>模擬器:</b> <a href="https://dangermomentum.itch.io/1256-sim"> 時停/時空潛行/次元斷絕的模擬器(左上角選擇對應機制)</a>
@@ -726,6 +803,7 @@ let data = {
 `
           },
           "陸服打法": {
+            tag: "cn",
             content: `
 <p>先不更懶了</p>
 `
@@ -733,8 +811,10 @@ let data = {
         }
       },
       "P4 - 完美亞歷山大": {
+        tag: "p4",
         strategies: {
           "NAUR美服打法": {
+            tag: "naur",
             content: `
 <p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
 <p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1XvPVWFjWNHWgyJ5yOP3WTPpYSfbTuqxs0hH5SzzRXRw/edit?usp=sharing"> PPT鏈接</a>
@@ -745,6 +825,7 @@ let data = {
 `
           },
           "陸服打法": {
+            tag: "cn",
             content: `
 <p>先不更懶了</p>
 `
@@ -754,11 +835,14 @@ let data = {
     }
   },
   "TOP 歐米茄絕境驗證戰（絕歐）": {
+    tag: "top",
     description: "待更",
     phases: {
       "P1 - 待更": {
+        tag: "p1",
         strategies: {
           "待更": {
+            tag: "tbd",
             content: `
 <p>待更</p>
 `
@@ -773,7 +857,7 @@ let currentFight = null;
 let currentPhase = null;
 let currentStrategy = null;
 
-const DEFAULT_TITLE = '地方的哈魯不想讓你知道的攻略整合站';
+const DEFAULT_TITLE = '篝火閣 - 哈魯的攻略書閣';
 const DEFAULT_DESC = `此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
 筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o`;
 
@@ -816,6 +900,102 @@ function renderFights() {
   });
 }
 
+/* ---------------------------------------------------------------
+   URL hash routing
+   Supported formats:
+     #fight:tea                          -> fight only (shorthand)
+     #fight=tea                          -> fight only
+     #fight=tea&phase=p2                 -> fight + phase (by tag)
+     #fight=tea&phase=2                  -> fight + phase (by 1-based order)
+     #fight=tea&phase=p2&strat=naur      -> fight + phase + strategy (by tag)
+   Any tag that doesn't match the data falls back gracefully:
+   an unknown fight tag returns to the home page; an unknown
+   phase/strategy tag simply falls back to that fight's first
+   phase/strategy instead of discarding a valid fight match.
+   ------------------------------------------------------------- */
+
+function findFightKeyByTag(tag) {
+  if (!tag) return null;
+  const t = String(tag).toLowerCase();
+  return Object.keys(data).find(k => (data[k].tag || '').toLowerCase() === t) || null;
+}
+
+function findPhaseKeyByTag(fightKey, tag) {
+  if (!tag || !data[fightKey]) return null;
+  const phases = data[fightKey].phases;
+  const keys = Object.keys(phases);
+  const t = String(tag);
+  if (/^\d+$/.test(t)) {
+    const idx = parseInt(t, 10) - 1;
+    return (idx >= 0 && idx < keys.length) ? keys[idx] : null;
+  }
+  const lower = t.toLowerCase();
+  return keys.find(k => (phases[k].tag || '').toLowerCase() === lower) || null;
+}
+
+function findStrategyKeyByTag(fightKey, phaseKey, tag) {
+  if (!tag || !phaseKey || !data[fightKey] || !data[fightKey].phases[phaseKey]) return null;
+  const strategies = data[fightKey].phases[phaseKey].strategies;
+  const t = String(tag).toLowerCase();
+  return Object.keys(strategies).find(k => (strategies[k].tag || '').toLowerCase() === t) || null;
+}
+
+function parseHash() {
+  let raw = location.hash || '';
+  if (raw.charAt(0) === '#') raw = raw.slice(1);
+  raw = raw.trim();
+  if (!raw) return null;
+
+  let fightTag = null, phaseTag = null, stratTag = null;
+
+  if (raw.indexOf('=') === -1 && raw.indexOf(':') !== -1) {
+    // shorthand form: fight:tea
+    const m = raw.match(/^fight:(.+)$/i);
+    if (m) fightTag = decodeURIComponent(m[1]);
+  } else {
+    const params = new URLSearchParams(raw);
+    if (params.has('fight')) fightTag = params.get('fight');
+    if (params.has('phase')) phaseTag = params.get('phase');
+    if (params.has('strat')) stratTag = params.get('strat');
+  }
+  return { fightTag, phaseTag, stratTag };
+}
+
+function updateHash() {
+  let newHash = '';
+  if (currentFight && data[currentFight]) {
+    const parts = ['fight=' + encodeURIComponent(data[currentFight].tag)];
+    if (currentPhase && data[currentFight].phases[currentPhase]) {
+      parts.push('phase=' + encodeURIComponent(data[currentFight].phases[currentPhase].tag));
+      const strategies = data[currentFight].phases[currentPhase].strategies;
+      if (currentStrategy && strategies[currentStrategy]) {
+        parts.push('strat=' + encodeURIComponent(strategies[currentStrategy].tag));
+      }
+    }
+    newHash = '#' + parts.join('&');
+  }
+  if ((location.hash || '') !== newHash) {
+    const base = location.pathname + location.search;
+    history.replaceState(null, '', newHash ? base + newHash : base);
+  }
+}
+
+function applyHashRoute() {
+  const parsed = parseHash();
+  if (!parsed || !parsed.fightTag) { goHome(); return; }
+
+  const fightKey = findFightKeyByTag(parsed.fightTag);
+  if (!fightKey) { goHome(); return; } // unmatched tag -> home page, and the bad hash is cleared
+
+  const phaseKey = parsed.phaseTag ? findPhaseKeyByTag(fightKey, parsed.phaseTag) : null;
+  const stratKey = (phaseKey && parsed.stratTag) ? findStrategyKeyByTag(fightKey, phaseKey, parsed.stratTag) : null;
+
+  // skipHashUpdate: true avoids rewriting a hash that's already valid; showContent()
+  // still normalizes it (e.g. a numeric phase index becomes its canonical tag) the
+  // next time the person interacts with the page.
+  selectFight(fightKey, { phase: phaseKey, strategy: stratKey, skipHashUpdate: true });
+}
+
 function updateBreadcrumb() {
   const bc = document.getElementById('breadcrumb');
   if (!currentFight) { bc.innerHTML = ''; return; }
@@ -827,7 +1007,8 @@ function updateBreadcrumb() {
   bc.innerHTML = parts.join(' ');
 }
 
-function goHome() {
+function goHome(opts) {
+  opts = opts || {};
   currentFight = null;
   currentPhase = null;
   currentStrategy = null;
@@ -839,20 +1020,23 @@ function goHome() {
   updateBreadcrumb();
   renderFights();
   closeMenu();
+  if (!opts.skipHashUpdate) updateHash();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function selectFight(fight) {
+function selectFight(fight, opts) {
+  opts = opts || {};
   currentFight = fight;
   document.getElementById('fight-title').innerText = fight;
   document.getElementById('fight-desc').innerHTML = applyReplacements(data[fight].description) || '';
   renderFights();
-  renderPhases();
+  renderPhases(opts.phase, opts.strategy, opts.skipHashUpdate);
   updateBreadcrumb();
+  closeMenu();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderPhases() {
+function renderPhases(preferredPhase, preferredStrategy, skipHashUpdate) {
   const phaseTabs = document.getElementById('phase-tabs');
   phaseTabs.innerHTML = '';
   const phases = data[currentFight].phases;
@@ -860,7 +1044,7 @@ function renderPhases() {
 
   if (keys.length <= 1) {
     currentPhase = keys[0];
-    renderStrategies();
+    renderStrategies(preferredStrategy, skipHashUpdate);
     updateBreadcrumb();
     return;
   }
@@ -874,6 +1058,7 @@ function renderPhases() {
 
     const tab = document.createElement('div');
     tab.className = 'phase-tab';
+    tab.dataset.phase = phase;
     tab.setAttribute('role', 'tab');
     tab.setAttribute('tabindex', '0');
 
@@ -901,20 +1086,23 @@ function renderPhases() {
     phaseTabs.appendChild(tab);
   });
 
-  currentPhase = keys[0];
-  const firstTab = phaseTabs.querySelector('.phase-tab');
-  if (firstTab) firstTab.classList.add('active');
-  renderStrategies();
+  const tabs = Array.from(phaseTabs.querySelectorAll('.phase-tab'));
+  currentPhase = (preferredPhase && phases[preferredPhase]) ? preferredPhase : keys[0];
+  const matchTab = tabs.find(t => t.dataset.phase === currentPhase) || tabs[0];
+  if (matchTab) matchTab.classList.add('active');
+  renderStrategies(preferredStrategy, skipHashUpdate);
 }
 
-function renderStrategies() {
+function renderStrategies(preferredStrategy, skipHashUpdate) {
   const container = document.getElementById('strategy-buttons');
   container.innerHTML = '';
   const strategies = data[currentFight].phases[currentPhase].strategies;
+  const keys = Object.keys(strategies);
 
-  Object.keys(strategies).forEach(name => {
+  keys.forEach(name => {
     const btn = document.createElement('div');
     btn.className = 'strategy-btn';
+    btn.dataset.strategy = name;
     btn.innerText = name;
     btn.setAttribute('role', 'button');
     btn.setAttribute('tabindex', '0');
@@ -923,14 +1111,14 @@ function renderStrategies() {
     container.appendChild(btn);
   });
 
-  const first = Object.keys(strategies)[0];
-  if (first) {
-    const firstBtn = container.children[0];
-    showContent(first, firstBtn);
+  const target = (preferredStrategy && strategies[preferredStrategy]) ? preferredStrategy : keys[0];
+  if (target) {
+    const targetBtn = Array.from(container.children).find(b => b.dataset.strategy === target);
+    showContent(target, targetBtn, skipHashUpdate);
   }
 }
 
-function showContent(name, btnElement) {
+function showContent(name, btnElement, skipHashUpdate) {
   currentStrategy = name;
   document.querySelectorAll('.strategy-btn').forEach(b => b.classList.remove('active'));
   if (btnElement) btnElement.classList.add('active');
@@ -941,6 +1129,8 @@ function showContent(name, btnElement) {
   html = html.replace(/<table class="table-style">/g, '<div class="table-wrap"><table class="table-style">');
   html = html.replace(/<\/table>/g, '</table></div>');
   contentDiv.innerHTML = html;
+
+  if (!skipHashUpdate) updateHash();
 }
 
 function applyTheme(isLight) {
@@ -970,11 +1160,13 @@ function closeMenu() {
   document.getElementById('backdrop').classList.remove('show');
 }
 
+window.addEventListener('hashchange', applyHashRoute);
+
 (function init() {
   let saved = null;
   try { saved = localStorage.getItem('strat-theme'); } catch (e) {}
   applyTheme(saved === 'light');
-  renderFights();
+  applyHashRoute();
 })();
 </script>
 </body>
