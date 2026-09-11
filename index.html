@@ -21,6 +21,9 @@
     --accent-teal: #5fd4c4;
     --accent-teal-strong: #7ee6d7;
     --danger: #ef7a7a;
+    --role-tank: #7fa8f2;
+    --role-heal: #7ee6a8;
+    --role-dps: #ef8ba0;
     --shadow: 0 10px 30px rgba(0,0,0,0.35);
     --radius-sm: 8px;
     --radius-md: 14px;
@@ -44,6 +47,9 @@
     --accent-teal: #0e8f82;
     --accent-teal-strong: #0b7469;
     --danger: #c74848;
+    --role-tank: #3f74d6;
+    --role-heal: #1f9e63;
+    --role-dps: #c94f68;
     --shadow: 0 10px 24px rgba(30,25,10,0.08);
   }
 
@@ -187,6 +193,9 @@
     border-radius: 9px;
     flex-shrink: 0;
     object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 0 3px rgba(224,180,84,0.08);
   }
   .sidebar-brand-name{
     font-family: var(--font-display);
@@ -443,6 +452,152 @@
     border-color: var(--accent-teal);
   }
 
+  /* Homepage-only sections (hidden once a fight is selected) */
+  .home-mode .phase-rail-wrap,
+  .home-mode .strategy-bar{ display: none; }
+  #leaderboard-wrap{ display: none; }
+  .home-mode #leaderboard-wrap{ display: block; }
+
+  .lb-section-head{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 6px 0 16px;
+  }
+  .lb-section-title{
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .lb-section-sub{
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .lb-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .lb-card-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(224,180,84,0.10), rgba(95,212,196,0.06));
+    border-bottom: 1px solid var(--border);
+  }
+  .lb-fight-name{
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+  }
+  .lb-count-badge{
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .lb-table-wrap{ overflow-x: auto; }
+  table.lb-table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+  .lb-table thead th{
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .lb-table tbody tr{
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s ease;
+  }
+  .lb-table tbody tr:last-child{ border-bottom: none; }
+  .lb-table tbody tr:hover{ background: var(--surface-2); }
+  .lb-table td{
+    padding: 13px 18px;
+    vertical-align: middle;
+    font-size: 13.5px;
+  }
+  .lb-team-cell{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .lb-team-dot{
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    flex-shrink: 0;
+  }
+  .lb-members{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    max-width: 380px;
+  }
+  .lb-member{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 9px 3px 3px;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .lb-job-icon{
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--surface-3);
+  }
+  .lb-job-icon.role-tank{ box-shadow: 0 0 0 1.5px var(--role-tank); }
+  .lb-job-icon.role-heal{ box-shadow: 0 0 0 1.5px var(--role-heal); }
+  .lb-job-icon.role-dps{ box-shadow: 0 0 0 1.5px var(--role-dps); }
+  .lb-period{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 5px 11px;
+    border-radius: var(--radius-sm);
+    line-height: 1.5;
+    max-width: 220px;
+  }
+  .lb-empty-row td{
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 22px 18px;
+  }
+
   /* Content */
   .content-panel{
     padding: 26px 34px 60px;
@@ -582,7 +737,7 @@
         <img class="brand-logo" src="assets/images/logo.png" alt="篝火閣" onerror="this.onerror=null;this.src=PLACEHOLDER_LOGO;">
         <div>
           <div class="sidebar-brand-name">篝火閣</div>
-          <div class="sidebar-brand-sub">哈魯的攻略書閣</div>
+          <div class="sidebar-brand-sub">篝火閣 - 哈魯的攻略書閣</div>
         </div>
       </div>
     </div>
@@ -598,16 +753,23 @@
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         <span id="themeLabel">切換為淺色模式</span>
       </div>
-      <div class="sidebar-credit">僅供親友參考 · 內容不持續更新中</div>
+      <div class="sidebar-credit">僅供親友參考 · 內容持續更新中</div>
     </div>
   </div>
 
-  <div id="main">
+  <div id="main" class="home-mode">
     <div class="content-header">
       <div class="breadcrumb" id="breadcrumb"></div>
       <div id="fight-title">篝火閣 - 哈魯的攻略書閣</div>
       <div id="fight-desc">此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
       筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o</div>
+    </div>
+    <div id="leaderboard-wrap" class="content-panel">
+      <div class="lb-section-head">
+        <span class="lb-section-title">篝火會</span>
+        <span class="lb-section-sub">由衷感謝曾在篝火處盤桓的友人們，紀錄每一個留下足跡的你。</span>
+      </div>
+      <div id="leaderboard-list"></div>
     </div>
     <div class="phase-rail-wrap">
       <div id="phase-tabs" class="phase-rail"></div>
@@ -680,7 +842,7 @@ let data = {
         tag: "p1",
         strategies: {
           "日野無視(小優化)": {
-            tag: "mana-opt",
+            tag: "hino-opt",
             content: `
 <p>先說跟普通日野無視的差異，大致上站位一樣，只是用讓副坦取代位置減輕補師的工作</p>
 <p>
@@ -699,13 +861,13 @@ let data = {
 `
           },
           "日野無視": {
-            tag: "mana",
+            tag: "hino",
             content: `
 <p> <a href="https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s">參考影片: https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s </a></p>
 `
           },
           "正攻": {
-            tag: "unused",
+            tag: "legit",
             content: `
 <p>正攻太麻煩了_(:з」∠)_</p>
 <p></p>
@@ -850,6 +1012,79 @@ let data = {
   },
 };
 
+/* ---------------------------------------------------------------
+   Team leaderboard (homepage)
+   NOTE: the roster below is placeholder / prototype sample data —
+   swap in the real team names, members and progress notes whenever
+   they're ready. Job icons try the same assets/images/jobs/*.png
+   convention used elsewhere on the site, and fall back to a simple
+   role-coloured circle (tank/healer/dps) if that file is missing.
+   ------------------------------------------------------------- */
+
+const JOB_META = {
+  pld: { role: 'tank', label: 'PLD' }, war: { role: 'tank', label: 'WAR' },
+  drk: { role: 'tank', label: 'DRK' }, gnb: { role: 'tank', label: 'GNB' },
+  whm: { role: 'heal', label: 'WHM' }, sch: { role: 'heal', label: 'SCH' },
+  ast: { role: 'heal', label: 'AST' }, sge: { role: 'heal', label: 'SGE' },
+  mnk: { role: 'dps', label: 'MNK' }, drg: { role: 'dps', label: 'DRG' },
+  nin: { role: 'dps', label: 'NIN' }, sam: { role: 'dps', label: 'SAM' },
+  rpr: { role: 'dps', label: 'RPR' }, vpr: { role: 'dps', label: 'VPR' },
+  brd: { role: 'dps', label: 'BRD' }, mch: { role: 'dps', label: 'MCH' },
+  dnc: { role: 'dps', label: 'DNC' }, blm: { role: 'dps', label: 'BLM' },
+  smn: { role: 'dps', label: 'SMN' }, rdm: { role: 'dps', label: 'RDM' },
+  pct: { role: 'dps', label: 'PCT' },
+};
+
+const ROLE_FALLBACK_ICON = {
+  tank: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="12" fill="#1a2038"/><path d="M12 4l6 2.4v4.3c0 4-2.6 7.1-6 8.3-3.4-1.2-6-4.3-6-8.3V6.4L12 4z" fill="#7fa8f2"/></svg>'),
+  heal: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="12" fill="#1a2038"/><path d="M11 5h2v5h5v2h-5v5h-2v-5H6V10h5V5z" fill="#7ee6a8"/></svg>'),
+  dps: "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="12" fill="#1a2038"/><path d="M6 18l9-9 1.5 1.5-9 9L6 18zm9.5-11l1-1 2.5 2.5-1 1L15.5 7z" fill="#ef8ba0"/></svg>'),
+};
+
+function jobIconHTML(jobKey) {
+  const key = String(jobKey || '').toLowerCase();
+  const meta = JOB_META[key] || { role: 'dps', label: key.toUpperCase().slice(0, 3) || '?' };
+  const src = 'assets/images/jobs/' + key + '.png';
+  const fb = ROLE_FALLBACK_ICON[meta.role];
+  return `<img class="lb-job-icon role-${meta.role}" src="${src}" alt="${meta.label}" title="${meta.label}" onerror="this.onerror=null;this.src='${fb}';">`;
+}
+
+const teamsData = {
+  "TEA 亞歷山大絕境戰（絕亞）": [
+    {
+      name: "國際服-大洋洲 (4帶4)",
+      period: "2026/2/25 - 2026/3/29 (16.5hr)",
+      players: [
+        { job: 'war', name: 'Cyanel Pengin @Marilith' }, { job: 'pld', name: 'Nova Nexus @Halicarnassus' },
+        { job: 'ast', name: 'Eunisl Kireina @Lamia' }, { job: 'sge', name: 'Altergeist Blackfoxgt @Typhon' },
+        { job: 'mnk', name: 'Rabbiteye Moonlight @Typhon' }, { job: 'sam', name: 'Hikaru Haru @Marilith' },
+        { job: 'dnc', name: 'Skewer Maker @Diablos' }, { job: 'smn', name: 'Nil Vardin @Typhon' },
+      ]
+    },
+    {
+      name: "繁中一隊 (4帶3+1復建)",
+      period: "2026/4/14 - 2026/4/30 (16hr)",
+      players: [
+        { job: 'drk', name: '百龍院沙加@泰坦' }, { job: 'pld', name: '野上良太郎@鳳凰' },
+        { job: 'ast', name: '不雪@巴哈姆特' }, { job: 'sge', name: '星羽心褀@奧汀' },
+        { job: 'blm', name: '一隻熊@鳳凰' }, { job: 'sam', name: '最後武士@伊弗利特' },
+        { job: 'dnc', name: '一隻牛@鳳凰' }, { job: 'smn', name: 'Rairai@迦樓羅' },
+      ]
+    },
+    {
+      name: "繁中二隊 (6帶2+1復建)",
+      period: "2026/5/27 - 2026/5/29 (5.5hr)",
+      players: [
+        { job: 'gnb', name: '芥末醬@奧汀' }, { job: 'pld', name: '野上良太郎@鳳凰' },
+        { job: 'ast', name: '不雪@巴哈姆特' }, { job: 'sge', name: '最後武士@伊弗利特' },
+        { job: 'blm', name: 'Kouns@奧汀' }, { job: 'sam', name: '美式居合@利維坦' },
+        { job: 'dnc', name: '一隻牛@鳳凰' }, { job: 'smn', name: '一隻熊@鳳凰' },
+      ]
+    },
+  ],
+  "會是什麼呢": [],
+};
+
 let currentFight = null;
 let currentPhase = null;
 let currentStrategy = null;
@@ -857,6 +1092,54 @@ let currentStrategy = null;
 const DEFAULT_TITLE = '篝火閣 - 哈魯的攻略書閣';
 const DEFAULT_DESC = `此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
 筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o`;
+
+function renderLeaderboards() {
+  const list = document.getElementById('leaderboard-list');
+  list.innerHTML = '';
+
+  Object.keys(data).forEach(fightName => {
+    const teams = teamsData[fightName] || [];
+
+    const card = document.createElement('div');
+    card.className = 'lb-card';
+
+    const header = document.createElement('div');
+    header.className = 'lb-card-header';
+    header.innerHTML = `<span class="lb-fight-name">${fightName}</span><span class="lb-count-badge">${teams.length} 隊伍</span>`;
+    card.appendChild(header);
+
+    const tableWrap = document.createElement('div');
+    tableWrap.className = 'lb-table-wrap';
+
+    const table = document.createElement('table');
+    table.className = 'lb-table';
+
+    let bodyRows;
+    if (teams.length === 0) {
+      bodyRows = `<tr class="lb-empty-row"><td colspan="3">尚無隊伍資料</td></tr>`;
+    } else {
+      bodyRows = teams.map(team => {
+        const membersHTML = (team.players || []).map(p =>
+          `<span class="lb-member">${jobIconHTML(p.job)}<span>${p.name}</span></span>`
+        ).join('');
+        return `
+          <tr>
+            <td><span class="lb-team-cell"><span class="lb-team-dot"></span>${team.name}</span></td>
+            <td><div class="lb-members">${membersHTML}</div></td>
+            <td><span class="lb-period">${team.period || ''}</span></td>
+          </tr>`;
+      }).join('');
+    }
+
+    table.innerHTML = `
+      <thead><tr><th>隊伍</th><th>成員</th><th>記錄</th></tr></thead>
+      <tbody>${bodyRows}</tbody>`;
+
+    tableWrap.appendChild(table);
+    card.appendChild(tableWrap);
+    list.appendChild(card);
+  });
+}
 
 function renderFights() {
   const container = document.getElementById('fightList');
@@ -1014,6 +1297,8 @@ function goHome(opts) {
   document.getElementById('phase-tabs').innerHTML = '';
   document.getElementById('strategy-buttons').innerHTML = '';
   document.getElementById('content').innerHTML = '';
+  document.getElementById('main').classList.add('home-mode');
+  renderLeaderboards();
   updateBreadcrumb();
   renderFights();
   closeMenu();
@@ -1026,6 +1311,7 @@ function selectFight(fight, opts) {
   currentFight = fight;
   document.getElementById('fight-title').innerText = fight;
   document.getElementById('fight-desc').innerHTML = applyReplacements(data[fight].description) || '';
+  document.getElementById('main').classList.remove('home-mode');
   renderFights();
   renderPhases(opts.phase, opts.strategy, opts.skipHashUpdate);
   updateBreadcrumb();
