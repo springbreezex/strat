@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>篝火閣 - 哈魯的攻略書閣</title>
+<title>天ノ宮略整合站</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
@@ -452,6 +452,7 @@
   /* Homepage-only sections (hidden once a fight is selected) */
   .home-mode .phase-rail-wrap,
   .home-mode .strategy-bar{ display: none; }
+  .phase-rail-wrap:has(#phase-tabs:empty){ display: none; } /* single-phase fights: no empty rail */
   #leaderboard-wrap{ display: none; }
   .home-mode #leaderboard-wrap{ display: block; }
 
@@ -595,6 +596,102 @@
     padding: 22px 18px;
   }
 
+  /* Case switcher: several images in one 圖例 cell */
+  .case-set{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 100%;
+  }
+  .case-tabs{
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    max-width: 100%;
+    overflow-x: auto;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+  .case-tab{
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .case-tab:hover{ color: var(--text); }
+  .case-tab[aria-pressed="true"]{
+    background: var(--accent-teal);
+    color: #06251f;
+  }
+  .case-stage{ max-width: 100%; }
+  #content .case-stage img[hidden]{ display: none; }
+
+  /* Click-to-enlarge images */
+  #content img.zoomable{
+    cursor: zoom-in;
+    transition: box-shadow 0.15s ease, filter 0.15s ease;
+  }
+  #content img.zoomable:hover{
+    filter: brightness(1.06);
+    box-shadow: 0 0 0 2px var(--accent-teal);
+  }
+
+  /* Image pop-up (lightbox) */
+  #zoom-overlay{
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 56px 12px 20px;
+    background: rgba(4, 6, 14, 0.88);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    touch-action: pinch-zoom;
+  }
+  #zoom-overlay.open{ display: flex; animation: fadeIn 0.15s ease; }
+  #zoom-img{
+    max-width: 96vw;
+    max-height: calc(100vh - 120px);
+    object-fit: contain;
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    cursor: zoom-out;
+  }
+  #zoom-cap{
+    color: #e8eaf5;
+    font-size: 13px;
+    min-height: 1.2em;
+    text-align: center;
+  }
+  #zoom-close{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  #zoom-close:hover{ background: rgba(255,255,255,0.22); }
+
   /* Content */
   .content-panel{
     padding: 26px 34px 60px;
@@ -620,7 +717,7 @@
   }
   #content h2:first-child{ margin-top: 0; }
   #content b{ color: var(--accent-teal-strong); font-weight: 700; }
-  #content img{ max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+  #content img{ max-width: 100%; height: auto; border-radius: var(--radius-sm);}
   #content > img{ margin: 10px 0 16px; box-shadow: var(--shadow); }
   #content a{ font-weight: 600; text-decoration: underline; text-decoration-color: rgba(95,212,196,0.4); text-underline-offset: 3px; }
 
@@ -726,6 +823,12 @@
 
 <div id="backdrop" onclick="closeMenu()"></div>
 
+<div id="zoom-overlay" role="dialog" aria-modal="true" aria-label="圖片放大檢視" aria-hidden="true">
+  <button id="zoom-close" type="button" aria-label="關閉放大圖片">&times;</button>
+  <img id="zoom-img" alt="">
+  <div id="zoom-cap"></div>
+</div>
+
 <div class="app">
   <div id="sidebar">
     <div class="sidebar-brand">
@@ -734,7 +837,7 @@
         <img class="brand-logo" src="assets/images/logo.png" alt="篝火閣" onerror="this.onerror=null;this.src=PLACEHOLDER_LOGO;">
         <div>
           <div class="sidebar-brand-name">篝火閣</div>
-          <div class="sidebar-brand-sub">篝火閣 - 哈魯的攻略書閣</div>
+          <div class="sidebar-brand-sub">天ノ宮略網</div>
         </div>
       </div>
     </div>
@@ -757,13 +860,13 @@
   <div id="main" class="home-mode">
     <div class="content-header">
       <div class="breadcrumb" id="breadcrumb"></div>
-      <div id="fight-title">篝火閣 - 哈魯的攻略書閣</div>
+      <div id="fight-title">天ノ宮略整合站</div>
       <div id="fight-desc">此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
-      筆者初衷只是為親友整合筆者認為更可取的打法。</div>
+      筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者爲天ノ宮せん主播忠實粉絲，故命名爲天ノ宮略整合站。</div>
     </div>
     <div id="leaderboard-wrap" class="content-panel">
       <div class="lb-section-head">
-        <span class="lb-section-title">篝火會</span>
+        <span class="lb-section-title">篝火會/天ノ宮會</span>
         <span class="lb-section-sub">由衷感謝曾在篝火處盤桓的友人們，紀錄每一個留下足跡的你。</span>
       </div>
       <div id="leaderboard-list"></div>
@@ -782,14 +885,22 @@
 const replacementDict = {
   "{tank_icon}": '<img src="tank.png" style="height:20px;vertical-align:middle;">',
   "{heal_icon}": '<img src="heal.png" style="height:20px;vertical-align:middle;">',
-  "{job:mt}": '<img src="assets/images/jobs/war.png" style="height:20px;vertical-align:middle;">',
-  "{job:st}": '<img src="assets/images/jobs/pld.png" style="height:20px;vertical-align:middle;">',
-  "{job:h1}": '<img src="assets/images/jobs/ast.png" style="height:20px;vertical-align:middle;">',
-  "{job:h2}": '<img src="assets/images/jobs/sge.png" style="height:20px;vertical-align:middle;">',
-  "{job:d1}": '<img src="assets/images/jobs/mnk.png" style="height:20px;vertical-align:middle;">',
-  "{job:d2}": '<img src="assets/images/jobs/sam.png" style="height:20px;vertical-align:middle;">',
-  "{job:d3}": '<img src="assets/images/jobs/dnc.png" style="height:20px;vertical-align:middle;">',
-  "{job:d4}": '<img src="assets/images/jobs/smn.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_mt}": '<img src="assets/images/jobs/war.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_st}": '<img src="assets/images/jobs/pld.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_h1}": '<img src="assets/images/jobs/ast.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_h2}": '<img src="assets/images/jobs/sge.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_d1}": '<img src="assets/images/jobs/mnk.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_d2}": '<img src="assets/images/jobs/sam.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_d3}": '<img src="assets/images/jobs/dnc.png" style="height:20px;vertical-align:middle;">',
+  "{job:tea_d4}": '<img src="assets/images/jobs/smn.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_mt}": '<img src="assets/images/jobs/drk.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_st}": '<img src="assets/images/jobs/pld.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_h1}": '<img src="assets/images/jobs/whm.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_h2}": '<img src="assets/images/jobs/sch.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_d1}": '<img src="assets/images/jobs/sam.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_d2}": '<img src="assets/images/jobs/drg.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_d3}": '<img src="assets/images/jobs/dnc.png" style="height:20px;vertical-align:middle;">',
+  "{job:umad_d4}": '<img src="assets/images/jobs/rdm.png" style="height:20px;vertical-align:middle;">',
   "{waymark:a}": '<img src="assets/images/waymark/waymarkA.png" style="height:20px;vertical-align:middle;">',
   "{waymark:b}": '<img src="assets/images/waymark/waymarkB.png" style="height:20px;vertical-align:middle;">',
   "{waymark:c}": '<img src="assets/images/waymark/waymarkC.png" style="height:20px;vertical-align:middle;">',
@@ -798,18 +909,23 @@ const replacementDict = {
   "{waymark:2}": '<img src="assets/images/waymark/waymark2.png" style="height:20px;vertical-align:middle;">',
   "{waymark:3}": '<img src="assets/images/waymark/waymark3.png" style="height:20px;vertical-align:middle;">',
   "{waymark:4}": '<img src="assets/images/waymark/waymark4.png" style="height:20px;vertical-align:middle;">',
-  "{alpha_debuff}": '<img src=https://i.imgur.com/wnNxJUR.png" style="height:20px;vertical-align:middle;">',
-  "{alpha_need_debuff}": '<img src=https://i.imgur.com/bux1tzu.png" style="height:20px;vertical-align:middle;">',
-  "{beta_debuff}": '<img src=https://i.imgur.com/jqyaiEF.png" style="height:20px;vertical-align:middle;">',
-  "{beta_need_debuff}": '<img src=https://i.imgur.com/zppLTuZ.png" style="height:20px;vertical-align:middle;">',
-  "{gamma_debuff}": '<img src=https://i.imgur.com/ad1o0Rw.png" style="height:20px;vertical-align:middle;">',
-  "{gamma_need_debuff}": '<img src=https://i.imgur.com/FJJ7RBM.png" style="height:20px;vertical-align:middle;">',
+  "{alpha_debuff}": '<img src="https://i.imgur.com/wnNxJUR.png" style="height:20px;vertical-align:middle;">',
+  "{alpha_need_debuff}": '<img src="https://i.imgur.com/bux1tzu.png" style="height:20px;vertical-align:middle;">',
+  "{beta_debuff}": '<img src="https://i.imgur.com/jqyaiEF.png" style="height:20px;vertical-align:middle;">',
+  "{beta_need_debuff}": '<img src="https://i.imgur.com/zppLTuZ.png" style="height:20px;vertical-align:middle;">',
+  "{gamma_debuff}": '<img src="https://i.imgur.com/ad1o0Rw.png" style="height:20px;vertical-align:middle;">',
+  "{gamma_need_debuff}": '<img src="https://i.imgur.com/FJJ7RBM.png" style="height:20px;vertical-align:middle;">',
   "{delta_debuff}": '<img src="https://i.imgur.com/s5V8hHw.png" style="height:20px;vertical-align:middle;">',
-  "{delta_need_debuff}": '<img src=https://i.imgur.com/NrjaST0.png" style="height:20px;vertical-align:middle;">',
-  "{water_debuff}": '<img src=https://i.imgur.com/e2JOj2W.png" style="height:20px;vertical-align:middle;">',
-  "{water_weak_debuff}": '<img src=https://i.imgur.com/ECoI4NP.png" style="height:20px;vertical-align:middle;">',
-  "{lightning_debuff}": '<img src=https://i.imgur.com/OwUySCI.png" style="height:20px;vertical-align:middle;">',
-  "{lightning_weak_debuff}": '<img src=https://i.imgur.com/GCX7hYE.png" style="height:20px;vertical-align:middle;">',
+  "{delta_need_debuff}": '<img src="https://i.imgur.com/NrjaST0.png" style="height:20px;vertical-align:middle;">',
+  "{water_debuff}": '<img src="https://i.imgur.com/e2JOj2W.png" style="height:20px;vertical-align:middle;">',
+  "{water_weak_debuff}": '<img src="https://i.imgur.com/ECoI4NP.png" style="height:20px;vertical-align:middle;">',
+  "{lightning_debuff}": '<img src="https://i.imgur.com/OwUySCI.png" style="height:20px;vertical-align:middle;">',
+  "{lightning_weak_debuff}": '<img src="https://i.imgur.com/GCX7hYE.png" style="height:20px;vertical-align:middle;">',
+  "{umad_confetti_debuff}": '<img src="assets/images/fight/ult-umad/confetti.png" style="height:20px;vertical-align:middle;">',
+  "{umad_teledown_debuff}": '<img src="assets/images/fight/ult-umad/tele_down.png" style="height:20px;vertical-align:middle;">',
+  "{umad_teleleft_debuff}": '<img src="assets/images/fight/ult-umad/tele_left.png" style="height:20px;vertical-align:middle;">',
+  "{umad_teleright_debuff}": '<img src="assets/images/fight/ult-umad/tele_right.png" style="height:20px;vertical-align:middle;">',
+  "{umad_teleup_debuff}": '<img src="assets/images/fight/ult-umad/tele_up.png" style="height:20px;vertical-align:middle;">',
 };
 
 function applyReplacements(html) {
@@ -828,7 +944,7 @@ let data = {
 <p>本攻略含有美服，日服，陸服打法。<b>P2根據不同攻略有完全不一樣的站位。</b>筆者本人將個人比較喜好（固團用）的打法放在預設攻略上，如對其他打法感興趣請手動選擇查閱</p>
 <p>選擇攻略的基準為練習成本最低化（較高容錯及有模擬器的打法優先）</p>
 <p>如P1及P2跟此打法，筆者會建議將黑魔或處理機製較弱隊員分配至D1位置，需要移動或處理機制的工作較少。</p>
-<p>圖示配置為: MT {job:mt} ST {job:st} H1 {job:h1} H2 {job:h2} D1 {job:d1} D2 {job:d2} D3 {job:d3} D4 {job:d4} </p>
+<p>圖示配置為: MT {job:tea_mt} ST {job:tea_st} H1 {job:tea_h1} H2 {job:tea_h2} D1 {job:tea_d1} D2 {job:tea_d2} D3 {job:tea_d3} D4 {job:tea_d4} </p>
 <p><h2>預設攻略用場標:</h2></p>
 <img src="assets/images/fight/ult-tea/p1-waymark.png" width=300>
 <br>
@@ -845,14 +961,14 @@ let data = {
 <p>
 <table class="table-style">
 <tr><th></th><th>解說</th><th>圖例</th></tr>
-<tr><td><h2>1</h2></td><td>MT {job:mt}以嘲諷開怪將王面向拉去北邊，<br>使用少量減傷應對第一次讀條 【流體擺動】<br><br>其餘人存資源，將團輔及資源延後至00:20左右等待有生命活水分裂</td><td><img src="assets/images/fight/ult-tea/p1-slide1.png" width=400></td></tr>
-<tr><td><h2>2</h2></td><td>有生命活水讀條【傾瀉】結束後，全員可以開始爆發(視乎隊伍喝爆發藥)<br><br>分裂後，會在隨機三個正點生成水龍卷及小怪 <b>活水之手</b>，<br>MT{job:mt}將<b>有生命活水</b>拉至沒有水龍卷的一側（南方）。<br>ST{job:st}以坦姿+數個GCD將 <b>活水之手</b> 拉仇並拉向東北，<br>同時可以對<b>活水之手</b>進行頭標方便後續DPS下減傷<br><br>全員無視 <b>活水之手</b> 的血量，並集火 <b>有生命活水</b>。 </td><td><img src="assets/images/fight/ult-tea/p1-slide2.png" width=400></td></tr>
-<tr><td><h2>3</h2></td><td>D3{job:d3}及D4{job:d4}可以如圖站位，預備引導可視扇形AOE<br>MT{job:mt}嘲諷CD轉好的時刻正常會是<b>活水之手</b>發光的時候，便可將<b>活水之手</b>拉一起<br><br>ST{job:st}可以以遠程傷害對<b>有生命活水</b>進行傷害，直至引導完可視扇形AOE才可以突進回到人群<br></td><td><img src="assets/images/fight/ult-tea/p1-slide3.png" width=400></td></tr>
-<tr><td><h2>4</h2></td><td>當可視扇形AOE出現，D3{job:d3}及D4{job:d4}可以走出範圍躲避，<br>ST{job:st}則可以突進回人群中繼續對<b>有生命活水</b>輸出<br>MT{job:mt}預備開<b>無敵</b>承受雙體的扇形對坦死刑<br><br>當可視扇形AOE造成完傷害後，會有第二次不可視扇形AOE傷害，<br>隨即會有一次來自<b>活水之手</b>的<b>極大群傷【苦痛之手】</b>。<br>D2{job:d2}及D4{job:d4}可以在看到可視扇形AOE後，即可對<b>活水之手</b>使用牽制及昏亂。<br><br>小建議：<br>如ST{job:st}先前有對<b>活水之手</b>標記頭標，D2{job:d2}及D4{job:d4}便可以巨集使用牽制，<br>則不用切換目標下減傷。<br>巨集指令範例： /ac 牽制 &lt;cross> </td><td><img src="assets/images/fight/ult-tea/p1-slide4.png" width=400></td></tr>
-<tr><td><h2>5</h2></td><td>當可視扇形AOE出現同時，會生成四隻小怪。<br>每隻小怪會同時造成圓形AOE，每個AOE會造成少量傷害，但同時吃到兩個AOE就會即死。<br>同時第一個對小怪造成傷害的玩家會與小怪連線，小怪便會跟隨玩家移動，<br>本攻略屬於無視小怪將不會對小怪機制作更多解釋，但請盡量避免AOE或傷害濺射到小怪身上。<br>如果不小心拉到小怪，<b>不要將小怪打死或拉至到王或手附近</b><br><br>當可視扇形AOE結束後，D3{job:d3}及D4{job:d4}需要回到原本位置誘導不可視扇形AOE，<br>MT{job:mt}開啟無敵應對死刑並使用雪仇</td><td><img src="assets/images/fight/ult-tea/p1-slide5.png" width=400></td></tr>
-<tr><td><h2>6</h2></td><td><b>有生命活水</b>及<b>活水之手</b>會對MT{job:mt}進行扇形死刑，<br>其他人確保不要站到雙體面前誤吃死刑。<br>但同時不要站太接近場中，否則會吃到兩個小怪的AOE。<br>圖中綠色位置為安全區域<br><br>D3{job:d3}開啟群減應對接下來的不可視扇形AOE及<b>極大群傷【苦痛之手】</b>。</td><td><img src="assets/images/fight/ult-tea/p1-slide6.png" width=400></td></tr>
-<tr><td><h2>7</h2></td><td>不可視扇形AOE屬於不能被躲避的傷害，確保D3{job:d3}及D4{job:d4}將東西兩側的水龍卷如圖誘導，<br>正常情況每人都會吃到一個或少於一個的不可視扇形AOE。<br><br>不可視扇形AOE<b>造成傷害後，</b><br>H1{job:h1}將全員血量盡量抬滿，<br>H2{job:h2}開啟群盾及減傷，<br>MT{job:mt}及ST{job:st}開啟特色群減或群盾，並可視乎情況給D4{job:d4}單體減。<br><br>由於群盾及減傷是以施法者位置為中心擴散，D3{job:d3}及D4{job:d4}在誘導完不可視扇形後可盡快靠近人群吃減傷。</td><td><img src="assets/images/fight/ult-tea/p1-slide7.png" width=400></td></tr>
-<tr><td><h2>8</h2></td><td><b>極大群傷【苦痛之手】</b>後，無人死亡即基本上沒問題！<br>之後其中兩個水龍捲會生成兩個<b>小水球</b>並朝王當時的位置移動，<br>如果玩家或<b>有生命活水</b>或<b>活水之手</b>接觸到即團滅。<br>MT{job:mt}將雙體如圖拉至西南躲避水球，<br>拉至目的地後ST{job:st}將<b>活水之手</b>挑釁並面向朝內，<br>MT{job:mt}及ST{job:st}開啟少量減傷應對各自的扇形死刑。<br>其餘人如圖站避免吃到扇形。<br><br>如隊伍組成需要，D3{job:d3}需用1個GCD或任意單體傷害將靠近西南側小怪拉至東南側。<br>筆者當時的組成並沒有此需要。</td><td><img src="assets/images/fight/ult-tea/p1-slide8.png" width=400></td></tr>
+<tr><td><h2>1</h2></td><td>MT {job:tea_mt}以嘲諷開怪將王面向拉去北邊，<br>使用少量減傷應對第一次讀條 【流體擺動】<br><br>其餘人存資源，將團輔及資源延後至00:20左右等待有生命活水分裂</td><td><img src="assets/images/fight/ult-tea/p1-slide1.png" width=400></td></tr>
+<tr><td><h2>2</h2></td><td>有生命活水讀條【傾瀉】結束後，全員可以開始爆發(視乎隊伍喝爆發藥)<br><br>分裂後，會在隨機三個正點生成水龍卷及小怪 <b>活水之手</b>，<br>MT{job:tea_mt}將<b>有生命活水</b>拉至沒有水龍卷的一側（南方）。<br>ST{job:tea_st}以坦姿+數個GCD將 <b>活水之手</b> 拉仇並拉向東北，<br>同時可以對<b>活水之手</b>進行頭標方便後續DPS下減傷<br><br>全員無視 <b>活水之手</b> 的血量，並集火 <b>有生命活水</b>。 </td><td><img src="assets/images/fight/ult-tea/p1-slide2.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>D3{job:tea_d3}及D4{job:tea_d4}可以如圖站位，預備引導可視扇形AOE<br>MT{job:tea_mt}嘲諷CD轉好的時刻正常會是<b>活水之手</b>發光的時候，便可將<b>活水之手</b>拉一起<br><br>ST{job:tea_st}可以以遠程傷害對<b>有生命活水</b>進行傷害，直至引導完可視扇形AOE才可以突進回到人群<br></td><td><img src="assets/images/fight/ult-tea/p1-slide3.png" width=400></td></tr>
+<tr><td><h2>4</h2></td><td>當可視扇形AOE出現，D3{job:tea_d3}及D4{job:tea_d4}可以走出範圍躲避，<br>ST{job:tea_st}則可以突進回人群中繼續對<b>有生命活水</b>輸出<br>MT{job:tea_mt}預備開<b>無敵</b>承受雙體的扇形對坦死刑<br><br>當可視扇形AOE造成完傷害後，會有第二次不可視扇形AOE傷害，<br>隨即會有一次來自<b>活水之手</b>的<b>極大群傷【苦痛之手】</b>。<br>D2{job:tea_d2}及D4{job:tea_d4}可以在看到可視扇形AOE後，即可對<b>活水之手</b>使用牽制及昏亂。<br><br>小建議：<br>如ST{job:tea_st}先前有對<b>活水之手</b>標記頭標，D2{job:tea_d2}及D4{job:tea_d4}便可以巨集使用牽制，<br>則不用切換目標下減傷。<br>巨集指令範例： /ac 牽制 &lt;cross> </td><td><img src="assets/images/fight/ult-tea/p1-slide4.png" width=400></td></tr>
+<tr><td><h2>5</h2></td><td>當可視扇形AOE出現同時，會生成四隻小怪。<br>每隻小怪會同時造成圓形AOE，每個AOE會造成少量傷害，但同時吃到兩個AOE就會即死。<br>同時第一個對小怪造成傷害的玩家會與小怪連線，小怪便會跟隨玩家移動，<br>本攻略屬於無視小怪將不會對小怪機制作更多解釋，但請盡量避免AOE或傷害濺射到小怪身上。<br>如果不小心拉到小怪，<b>不要將小怪打死或拉至到王或手附近</b><br><br>當可視扇形AOE結束後，D3{job:tea_d3}及D4{job:tea_d4}需要回到原本位置誘導不可視扇形AOE，<br>MT{job:tea_mt}開啟無敵應對死刑並使用雪仇</td><td><img src="assets/images/fight/ult-tea/p1-slide5.png" width=400></td></tr>
+<tr><td><h2>6</h2></td><td><b>有生命活水</b>及<b>活水之手</b>會對MT{job:tea_mt}進行扇形死刑，<br>其他人確保不要站到雙體面前誤吃死刑。<br>但同時不要站太接近場中，否則會吃到兩個小怪的AOE。<br>圖中綠色位置為安全區域<br><br>D3{job:tea_d3}開啟群減應對接下來的不可視扇形AOE及<b>極大群傷【苦痛之手】</b>。</td><td><img src="assets/images/fight/ult-tea/p1-slide6.png" width=400></td></tr>
+<tr><td><h2>7</h2></td><td>不可視扇形AOE屬於不能被躲避的傷害，確保D3{job:tea_d3}及D4{job:tea_d4}將東西兩側的水龍卷如圖誘導，<br>正常情況每人都會吃到一個或少於一個的不可視扇形AOE。<br><br>不可視扇形AOE<b>造成傷害後，</b><br>H1{job:tea_h1}將全員血量盡量抬滿，<br>H2{job:tea_h2}開啟群盾及減傷，<br>MT{job:tea_mt}及ST{job:tea_st}開啟特色群減或群盾，並可視乎情況給D4{job:tea_d4}單體減。<br><br>由於群盾及減傷是以施法者位置為中心擴散，D3{job:tea_d3}及D4{job:tea_d4}在誘導完不可視扇形後可盡快靠近人群吃減傷。</td><td><img src="assets/images/fight/ult-tea/p1-slide7.png" width=400></td></tr>
+<tr><td><h2>8</h2></td><td><b>極大群傷【苦痛之手】</b>後，無人死亡即基本上沒問題！<br>之後其中兩個水龍捲會生成兩個<b>小水球</b>並朝王當時的位置移動，<br>如果玩家或<b>有生命活水</b>或<b>活水之手</b>接觸到即團滅。<br>MT{job:tea_mt}將雙體如圖拉至西南躲避水球，<br>拉至目的地後ST{job:tea_st}將<b>活水之手</b>挑釁並面向朝內，<br>MT{job:tea_mt}及ST{job:tea_st}開啟少量減傷應對各自的扇形死刑。<br>其餘人如圖站避免吃到扇形。<br><br>如隊伍組成需要，D3{job:tea_d3}需用1個GCD或任意單體傷害將靠近西南側小怪拉至東南側。<br>筆者當時的組成並沒有此需要。</td><td><img src="assets/images/fight/ult-tea/p1-slide8.png" width=400></td></tr>
 </table>
 <p> <a href="https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s">參考影片: https://www.youtube.com/watch?v=GXMSDLwm8Bs&t=77s </a></p>
 `
@@ -901,7 +1017,6 @@ let data = {
             content: `
 <p>筆者之後有空才會把之前弄的PPT放進來網頁裡，先將就看一下PPT</p>
 <p><b>Google Sheet:</b> <a href="https://docs.google.com/presentation/d/1y8m6GqlgfKKREHOe8z8k-Bo4rdf5hqDSxa-9znjR3Mc/edit?usp=sharing"> PPT鏈接</a>
-<p><b>流程解說:</b> <a href="https://youtu.be/bsh8EdJqp9M"> https://youtu.be/bsh8EdJqp9M</a> (請配合文本攻略服用)
 <br>
 <br>
 <br>
@@ -1008,6 +1123,96 @@ let data = {
       },
     }
   },
+  "UMAD 絕妖星亂舞（絕妖星）": {
+    tag: "umad",
+    description: `
+<p><h2>隊伍配置:</h2> </p>
+<p>圖示配置為: MT {job:umad_mt} ST {job:umad_st} H1 {job:umad_h1} H2 {job:umad_h2} D1 {job:umad_d1} D2 {job:umad_d2} D3 {job:umad_d3} D4 {job:umad_d4} </p>
+`,
+    phases: {
+      "P1 - 小丑": {
+        tag: "p1",
+        strategies: {
+          "縫合": {
+            tag: "mix",
+            content: `
+<p>
+<table class="table-style">
+<tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td><h2>1</h2></td><td><b>卡夫卡</b>會對主仇施放，對目標前方扇形死刑。<br>攻擊兩次，第一次攻擊主仇，第二次攻擊次仇。<br>副坦{job:umad_st}在第一次攻擊後挑釁，確保兩次攻擊都對主坦。</td><td><img src="assets/images/fight/ult-umad/p1-slide1.png" width=400></td></tr>
+<tr><td><h2>2</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>雕像會對 <b>全DPS或全坦補</b> 連線，被連線的對象會以雕像爲中心擊退。<br>擊退後根據<b>卡夫卡</b>身上環形+真僞球找自己安地<br><br><b>火圈:</b> 分攤/散開 (可視式標記)<br><b>冰圈:</b> 2個可視式90度扇形AOE<br>同時需要查看真僞球，如圈上的球帶有問號，則相反處理。<br><br>坦奶組{job:umad_mt}{job:umad_st}{job:umad_h1}{job:umad_h2}西邊處理，DPS組{job:umad_d1}{job:umad_d2}{job:umad_d3}{job:umad_d4}東邊處理。 (真北)</td><td><img src="assets/images/fight/ult-umad/p1-slide2.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>坦奶組西邊處理，DPS組東邊處理。 (真北)<br><b>分攤情況:</b> 在安地與自己組其餘三人分攤即可<br><b>散開情況:</b> ST組{job:umad_h2}{job:umad_st}{job:umad_d2}{job:umad_d4}橫中線排開，MT組{job:umad_h1}{job:umad_mt}{job:umad_d1}{job:umad_d3}根據安地情況在安地側安地散開。(如圖)</td><td><img src="assets/images/fight/ult-umad/p1-slide3a.png" data-case="左上右下" width=400><img src="assets/images/fight/ult-umad/p1-slide3b.png" data-case="右上左下" width=400></td></tr>
+<tr><td><h2>4</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>散開/分攤後如圖在橫中線<b>8人散開</b>，待隨機2名坦奶及2名DPS被光束射擊。 <br>射擊後會生成塔，由未被點名的人負責踩塔。</td><td><img src="assets/images/fight/ult-umad/p1-slide4.png" width=400></td></tr>
+<tr><td><h2>5</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>射擊後會生成塔，由未被點名的人負責踩塔。<br><b>踩塔優先級:</b> 處理自己職能組的塔，在未被射擊的兩人中 - 靠左側的人踩左塔，靠右側第二人踩右塔</td><td><img src="assets/images/fight/ult-umad/p1-slide5.png" width=400></td></tr>
+<tr><td><h2>6</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>在東西側處理44分攤，坦奶組{job:umad_mt}{job:umad_st}{job:umad_h1}{job:umad_h2}西邊處理，DPS組{job:umad_d1}{job:umad_d2}{job:umad_d3}{job:umad_d4}東邊處理。 (真北)<br><br>同時留意隊伍列表，兩組人會各有一名隨機玩家帶有<b>紫色毒debuff</b>{umad_confetti_debuff}。分攤會點名在帶有{umad_confetti_debuff}的玩家身上，<b>並以其爲中心擊退其餘三名分攤玩家</b>。<br>分攤後，{umad_confetti_debuff}會傳到分攤的三人中的隨機一名，待後面倒計時結束時再處理一樣機制。</td><td><img src="assets/images/fight/ult-umad/p1-slide6.png" width=400></td></tr>
+<tr><td><h2>7</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 1</b><br><br>擊退後根據<b>卡夫卡</b>身上環形+真僞球找自己安地<br><br><b>雷圈:</b> 2條可視式平行長方形AOE<br><b>冰圈:</b> 2個可視式90度扇形AOE(同#2一樣)<br>同時需要查看真僞球，如圈上的球帶有問號，則相反處理(可視的AOE範圍中才是安地)。</td><td><img src="assets/images/fight/ult-umad/p1-slide7.png" width=400></td></tr>
+<tr><td><h2>7.5</h2></td><td><b>裁きの光 / 審判之光 / Light of Judgment</b><br><br>對目標減: {job:umad_mt}+{job:umad_d2}+{job:umad_d4}<br><br><b>ハイパードライブ / 超光速推進 / Hyperdrive (3x)</b><br>對坦3次死刑: {job:umad_st}全減接</td><td></td></tr>
+
+<tr><td><h2>8</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>雕像會對 <b>8人</b> 連兩組線，中線/右線(同職能必定相同)<br><b>中線:</b> 放置重力彈<br><b>右線:</b> 散開石頭AOE (要遠離其他人及重力彈)<br><br>全員先在C集合，並躲避一組冰+真僞判定</td><td><img src="assets/images/fight/ult-umad/p1-slide8.png" width=400></td></tr>
+<tr><td><h2>9</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>放置重力彈後，右線組<b>以看王基準</b>如圖散開，MT組往左，ST組往右<br>(注:圖示有誤，AOE不小心覆蓋到重力彈，錯誤示範)</b><td><img src="assets/images/fight/ult-umad/p1-slide9.png" width=400></td></tr>
+<tr><td><h2>10</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>副坦{job:umad_st}挑釁作主仇預備用<b>無敵</b>接兩次前方扇形死刑。<br>跟開場一樣攻擊兩次，第一次攻擊主仇，第二次攻擊次仇。<br>主坦{job:umad_mt}在第一次攻擊後挑釁，確保兩次攻擊都對主坦。<br><br>同時雕像會<b>在其中一側生成球體</b>，並對該側作半場AOE。<br>在安地側躲避即可。<td><img src="assets/images/fight/ult-umad/p1-slide10.png" width=400></td></tr>
+<tr><td><h2>11</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>其後全員到A點集合放置重力彈，中線及右線會再次出現，有機會與第一次相反亦有機會一樣。<td><img src="assets/images/fight/ult-umad/p1-slide11.png" width=400></td></tr>
+<tr><td><h2>12</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>放置重力彈後，跟前面一樣，以看王基準散開。<br>MT組往左，ST組往右<td><img src="assets/images/fight/ult-umad/p1-slide12.png" width=400></td></tr>
+<tr><td><h2>13</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>再一次半場AOE，同時坦奶組{job:umad_mt}{job:umad_st}{job:umad_h1}{job:umad_h2}預先站北面，<br>DPS組{job:umad_d1}{job:umad_d2}{job:umad_d3}{job:umad_d4}預先站南面<br>預備處理傳毒{umad_confetti_debuff}<td><img src="assets/images/fight/ult-umad/p1-slide13.png" width=400></td></tr>
+<tr><td><h2>14</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>如圖站位預備分攤+擊退，留意持{umad_confetti_debuff}必須靠近重力彈側，其餘三人要利用擊退移動至對面的重力彈中。<td><img src="assets/images/fight/ult-umad/p1-slide14.png" width=400></td></tr>
+<tr><td><h2>15</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 2</b><br><br>6人擊退後，原本持{umad_confetti_debuff}的玩家需要走進靠近自己的重力彈內與其餘三人一起分攤。<td><img src="assets/images/fight/ult-umad/p1-slide15.png" width=400></td></tr>
+<tr><td><h2>15.5</h2></td><td><b>裁きの光 / 審判之光 / Light of Judgment</b><br><br>對目標減: {job:umad_mt}+{job:umad_d1}<br><br><b>ハイパードライブ / 超光速推進 / Hyperdrive (3x)</b><br>對坦3次死刑: {job:umad_mt}無敵接</td><td></td></tr>
+
+<tr><td><h2>16</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 3</b><br><br>每人會獲得四種debuff中其中兩個{umad_teleup_debuff}{umad_teleright_debuff}{umad_teledown_debuff}{umad_teleleft_debuff}(有機會重複)。<br>Debuff結束時會放置箭頭在地圖上，每人根據右圖尋找自己需要負責的位置。<br>同時根據Debuff結束時間判斷自己需要放置的次序。<td><img src="assets/images/fight/ult-umad/p1-slide16.png" width=400></td></tr>
+<tr><td><h2>17</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 3</b><br><br>放置後如圖預備傳毒，坦奶組在左上處理(西北方)，DPS組在右下處理(東南方)。<br>不持{umad_confetti_debuff}的玩家往場中擊退，小心不要踩到箭頭<td><img src="assets/images/fight/ult-umad/p1-slide17.png" width=400></td></tr>
+<tr><td><h2>18</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 3</b><br><br>擊退後八人如圖走到位置預備處理混亂及睡眠機制：<br><b>中線組：</b> 獲得混亂，會強制朝最近一名玩家移動及不能作任何動作<br><b>右線組：</b> 獲得睡眠，不能移動及作任何動作<br><br>站位正確及放置正確自然會處理機制，不用理會哪組線。<td><img src="assets/images/fight/ult-umad/p1-slide18.png" width=400></td></tr>
+<tr><td><h2>19</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 3</b><br><br>其後卡夫卡會作一輪火雷圈+雕像視線機制:<br><br><b>火圈:</b> 分攤/散開 (+真僞球)<br><b>雷圈:</b> 2條平行可視長方形AOE (+真僞球)<br><b>雕像視線:</b> 紫色眼球不能直視，黃色眼球需要直視<br><br>八人可以預先如圖站位預備處理<td><img src="assets/images/fight/ult-umad/p1-slide19.png" width=400></td></tr>
+<tr><td><h2>20</h2></td><td><b>神々の像 / 眾神雕像 / Graven Image 3</b><br><br>雷圈共四種情況，散開情況參照左邊四張圖。<br><b>分攤情況:</b><br>DPS組在1號場標(西北方向)分攤<br>坦奶組在3號場標(東南方向)分攤<td><img src="assets/images/fight/ult-umad/p1-slide20a.png" data-case="散開A" width=400><img src="assets/images/fight/ult-umad/p1-slide20b.png" data-case="散開B" width=400><img src="assets/images/fight/ult-umad/p1-slide20c.png" data-case="散開C" width=400><img src="assets/images/fight/ult-umad/p1-slide20d.png" data-case="散開D" width=400><img src="assets/images/fight/ult-umad/p1-slide20e.png" data-case="分攤" width=400></td></tr>
+</table>
+<p> <a href="https://www.youtube.com/@TennomiyaSen">參考影片: Youtube </a></p>
+`
+          }
+        }
+      },
+      "P2 - 黃色小丑": {
+        tag: "p2",
+        strategies: {
+          "縫合": {
+            tag: "mix",
+            content: `
+<p><b>中文版攻略:</b> <a href="https://mine-9woo.com/guide/yosei-ranbu/">飯飯的魔法小屋</a> P2中 選擇優先順版（ぴれん式）</p>
+<p><b>英文版攻略:</b> <a href="https://raidplan.io/plan/UATE__aDcw1-bgVv"> raidplan</a> </p>
+<br><br>
+<p>！！先行版 待定！！</p>
+<p><b>トライン（三角陣）Trines:</b> <a href="https://raidplan.io/plan/apkh6ytq72w8pt3v"> raidplan</a> </p>
+<br>`
+          }
+        }
+      },
+      "P3 - 小丑": {
+        tag: "p3",
+        strategies: {
+          "縫合": {
+            tag: "mix",
+            content: `待更`
+          }
+        }
+      },
+      "P4 - 黃色小丑": {
+        tag: "p4",
+        strategies: {
+          "縫合": {
+            tag: "mix",
+            content: `待更`
+          }
+        }
+      },
+      "P5 - 變身小丑": {
+        tag: "p5",
+        strategies: {
+          "縫合": {
+            tag: "mix",
+            content: `待更`
+          }
+        }
+      },
+    }
+  },
 };
 
 /* ---------------------------------------------------------------
@@ -1101,15 +1306,16 @@ const teamsData = {
     },
   ],
   "TOP 歐米茄絕境驗證戰（絕歐）": [],
+  "UMAD 絕妖星亂舞（絕妖星）": [],
 };
 
 let currentFight = null;
 let currentPhase = null;
 let currentStrategy = null;
 
-const DEFAULT_TITLE = '篝火閣 - 哈魯的攻略書閣';
+const DEFAULT_TITLE = '天ノ宮略整合站';
 const DEFAULT_DESC = `此攻略網主要是筆者為筆者的親友所建設，但不限於任何路過的參考或分享。有任何錯漏或建議歡迎告知筆者本人，不過筆者很懶。<br>
-筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者並非六絶亦不是99大佬，請不要抱有任何期待。o3o`;
+      筆者只是為外語不好的親友整合筆者認為更可取的打法，筆者爲天ノ宮せん主播忠實粉絲，故命名爲天ノ宮略整合站。`;
 
 function renderLeaderboards() {
   const list = document.getElementById('leaderboard-list');
@@ -1150,7 +1356,7 @@ function renderLeaderboards() {
     }
 
     table.innerHTML = `
-      <thead><tr><th>隊伍</th><th>成員</th><th>記錄</th></tr></thead>
+      <thead><tr><th>隊伍</th><th>成員</th><th>進度 / 備註</th></tr></thead>
       <tbody>${bodyRows}</tbody>`;
 
     tableWrap.appendChild(table);
@@ -1429,9 +1635,118 @@ function showContent(name, btnElement, skipHashUpdate) {
   let html = applyReplacements(raw);
   html = html.replace(/<table class="table-style">/g, '<div class="table-wrap"><table class="table-style">');
   html = html.replace(/<\/table>/g, '</table></div>');
+  closeZoom();
   contentDiv.innerHTML = html;
+  enhanceContentImages(contentDiv);
 
   if (!skipHashUpdate) updateHash();
+}
+
+/* ---------------------------------------------------------------
+   Content image enhancements
+   1) Case switcher: when a table cell holds 2+ legend images, they are
+      grouped and a small button row lets the reader switch between
+      cases. Authors only need to put several <img> in the cell and
+      optionally label each with data-case="情況名稱".
+   2) Click-to-enlarge: any legend image opens in a pop-up.
+   Small inline icons (height:20px) are ignored by both.
+   ------------------------------------------------------------- */
+
+function isIconImg(img) {
+  return /height:\s*20px/.test(img.getAttribute('style') || '');
+}
+
+function enhanceContentImages(root) {
+  root.querySelectorAll('td').forEach(td => {
+    const imgs = Array.from(td.querySelectorAll('img')).filter(i => !isIconImg(i));
+    if (imgs.length < 2) return;
+
+    const set = document.createElement('div');
+    set.className = 'case-set';
+    const tabs = document.createElement('div');
+    tabs.className = 'case-tabs';
+    tabs.setAttribute('role', 'group');
+    tabs.setAttribute('aria-label', '切換情況');
+    const stage = document.createElement('div');
+    stage.className = 'case-stage';
+
+    imgs[0].parentNode.insertBefore(set, imgs[0]);
+    set.appendChild(tabs);
+    set.appendChild(stage);
+
+    const buttons = [];
+    const select = (idx) => {
+      imgs.forEach((img, i) => { img.hidden = (i !== idx); });
+      buttons.forEach((b, i) => b.setAttribute('aria-pressed', i === idx ? 'true' : 'false'));
+    };
+
+    imgs.forEach((img, i) => {
+      const label = img.getAttribute('data-case') || ('情況 ' + (i + 1));
+      img.setAttribute('data-case', label);
+      if (!img.getAttribute('alt')) img.setAttribute('alt', label);
+      stage.appendChild(img);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'case-tab';
+      btn.textContent = label;
+      btn.onclick = () => select(i);
+      tabs.appendChild(btn);
+      buttons.push(btn);
+    });
+    select(0);
+  });
+
+  root.querySelectorAll('img').forEach(img => {
+    if (isIconImg(img)) return;
+    img.classList.add('zoomable');
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    const label = img.getAttribute('data-case');
+    img.setAttribute('aria-label', label ? '放大圖片：' + label : '放大圖片');
+  });
+}
+
+let zoomLastFocus = null;
+
+function openZoom(img) {
+  const overlay = document.getElementById('zoom-overlay');
+  const zImg = document.getElementById('zoom-img');
+  zImg.src = img.currentSrc || img.src;
+  zImg.alt = img.getAttribute('alt') || '';
+  document.getElementById('zoom-cap').textContent = img.getAttribute('data-case') || '';
+  zoomLastFocus = document.activeElement;
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('zoom-close').focus();
+}
+
+function closeZoom() {
+  const overlay = document.getElementById('zoom-overlay');
+  if (!overlay.classList.contains('open')) return;
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden', 'true');
+  document.getElementById('zoom-img').removeAttribute('src');
+  document.body.style.overflow = '';
+  if (zoomLastFocus && zoomLastFocus.focus) zoomLastFocus.focus();
+  zoomLastFocus = null;
+}
+
+function initImageZoom() {
+  const content = document.getElementById('content');
+  content.addEventListener('click', (e) => {
+    const img = e.target.closest && e.target.closest('img.zoomable');
+    if (img) openZoom(img);
+  });
+  content.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('zoomable')) {
+      e.preventDefault();
+      openZoom(e.target);
+    }
+  });
+  document.getElementById('zoom-overlay').addEventListener('click', closeZoom);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeZoom(); });
 }
 
 function applyTheme(isLight) {
@@ -1461,6 +1776,7 @@ function closeMenu() {
   document.getElementById('backdrop').classList.remove('show');
 }
 
+initImageZoom();
 window.addEventListener('hashchange', applyHashRoute);
 
 (function init() {
