@@ -1169,22 +1169,47 @@ let data = {
           }
         }
       },
-      "P2 - 黃色小丑": {
+      "P2 - 裸體小丑": {
         tag: "p2",
         strategies: {
-          "縫合": {
-            tag: "mix",
+          "連鎖缺失": {
+            tag: "forsaken",
             content: `
-<p><b>中文版攻略:</b> <a href="https://mine-9woo.com/guide/yosei-ranbu/">飯飯的魔法小屋</a> P2中 選擇優先順版（ぴれん式）</p>
+<b>ミッシング（連鎖缺失）Forsaken</b>
+<table class="table-style">
+<tr><th>單數塔站位</th><th>雙數塔站位（扇形數字標）</th><th>雙數塔站位（扇形字母標）</th></tr>
+<tr><td><img src="assets/images/fight/ult-umad/p2-odd.png" width=400></td><td><img src="assets/images/fight/ult-umad/p2-evena.png" data-case="數字標情況" width=400></td><td><img src="assets/images/fight/ult-umad/p2-evenb.png" data-case="字母標情況" width=400></td></tr>
+</table>
+<table class="table-style">
+<tr><th>職能流程圖</th></tr>
+<tr><td>單數塔參照單數塔站位圖對應數字標，雙數塔參照雙數數塔站位圖對應數字標<br><img src="assets/images/fight/ult-umad/p2-tank_flow.png" data-case="坦克流程" width=100%><img src="assets/images/fight/ult-umad/p2-healer_flow.png" data-case="補師流程" width=100%><img src="assets/images/fight/ult-umad/p2-melee_flow.png" data-case="近接流程" width=100%><img src="assets/images/fight/ult-umad/p2-range_flow.png" data-case="遠接流程" width=100%></td></tr>
+</table>
 <p><b>英文版攻略:</b> <a href="https://raidplan.io/plan/UATE__aDcw1-bgVv"> raidplan</a> </p>
-<br><br>
-<p>！！先行版 待定！！</p>
-<p><b>トライン（三角陣）Trines:</b> <a href="https://raidplan.io/plan/apkh6ytq72w8pt3v"> raidplan</a> </p>
+<br>
+<br><br><br>
+<p><b>不適用 只供參考的中文版攻略:</b> <a href="https://mine-9woo.com/guide/yosei-ranbu/">飯飯的魔法小屋</a></p>
 <br>`
-          }
+          },
+		  "三角陣": {
+            tag: "trines",
+            content: `
+<b>トライン（三角陣）Trines</b>
+<table class="table-style">
+<tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td><h2>1</h2></td><td><b>卡夫卡</b>其中一側翅膀會發亮，並對那側半場打半場AOE。途中會分三次生成7個三角形(3+1+3)，要記得第一組生成的位置。</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide1.png" width=400></td></tr>
+<tr><td><h2>2</h2></td><td>每個三角形角落會打一個圓形AOE，如圖所示整個場地幾乎會被完全覆蓋。<br><br>場中三角形<b>必定是第三組出現</b>，所以要記得第一組出現的三角形，並<b>在中間等第一輪三角爆炸後，朝第一輪三角形移動躲避剩餘的三角形</b>。<br><br>由於最後會有死刑誘導需要處理，DPS+補師需要遠離坦克：<br><b>DPS組+補師組:</b> 從12點順時針找最近的安地<br><b>坦克組:</b>從11點逆時針找最近的安地</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide2.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td><b>圖爲其中一種範例:</b><br>先在場中觀察等第一組三角形爆炸，預備移動到安地。</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide3.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>移動到安地後:<br><br><b>{job:umad_st}ST</b>需要貼場地邊遠誘導死刑<br><b>{job:umad_mt}MT</b>需要儘量靠近場中誘導死刑<br><b>其餘的人</b> 不要太貼場邊及遠離中間即可</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide4.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>第二輪三角形爆炸</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide5.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>第三輪三角形爆炸<br><br>坦克誘導處理完畢</td><td><img src="assets/images/fight/ult-umad/p2-trines_slide6.png" width=400></td></tr>
+
+</table>
+<p><b>英文版:</b> <a href="https://raidplan.io/plan/apkh6ytq72w8pt3v"> raidplan</a> </p>
+`
+		  }
         }
       },
-      "P3 - 小丑": {
+      "P3 - 兩隻小丑": {
         tag: "p3",
         strategies: {
           "縫合": {
@@ -1193,7 +1218,7 @@ let data = {
           }
         }
       },
-      "P4 - 黃色小丑": {
+      "P4 - 還是小丑": {
         tag: "p4",
         strategies: {
           "縫合": {
