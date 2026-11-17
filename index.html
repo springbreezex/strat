@@ -926,6 +926,14 @@ const replacementDict = {
   "{umad_teleleft_debuff}": '<img src="assets/images/fight/ult-umad/tele_left.png" style="height:20px;vertical-align:middle;">',
   "{umad_teleright_debuff}": '<img src="assets/images/fight/ult-umad/tele_right.png" style="height:20px;vertical-align:middle;">',
   "{umad_teleup_debuff}": '<img src="assets/images/fight/ult-umad/tele_up.png" style="height:20px;vertical-align:middle;">',
+  "{umad_tailwind_debuff}": '<img src="assets/images/fight/ult-umad/tailwind.png" style="height:20px;vertical-align:middle;">',
+  "{umad_headwind_debuff}": '<img src="assets/images/fight/ult-umad/headwind.png" style="height:20px;vertical-align:middle;">',
+  "{umad_entropy_debuff}": '<img src="assets/images/fight/ult-umad/entropy.png" style="height:20px;vertical-align:middle;">',
+  "{umad_dynamic_fluid_debuff}": '<img src="assets/images/fight/ult-umad/dynamic_fluid.png" style="height:20px;vertical-align:middle;">',
+  "{umad_primordial_crust_debuff}": '<img src="assets/images/fight/ult-umad/primordial_crust.png" style="height:20px;vertical-align:middle;">',
+  "{umad_accretion_debuff}": '<img src="assets/images/fight/ult-umad/accretion.png" style="height:20px;vertical-align:middle;">',
+  "{umad_fated_hero_debuff}": '<img src="assets/images/fight/ult-umad/fated_hero.png" style="height:20px;vertical-align:middle;">',
+  "{umad_epic_hero_debuff}": '<img src="assets/images/fight/ult-umad/epic_hero.png" style="height:20px;vertical-align:middle;">',
 };
 
 function applyReplacements(html) {
@@ -1212,8 +1220,32 @@ let data = {
       "P3 - 兩隻小丑": {
         tag: "p3",
         strategies: {
-          "縫合": {
-            tag: "mix",
+          "縫合版決戦（決戰）": {
+            tag: "first-half",
+            content: `
+<b>決戦（決戰）</b> <br>
+爲方便解釋，以下爲部分名詞簡稱:<br>
+<b>小黃</b> - カオス / 混沌 / Chaos<br>
+<b>小藍</b> - エクスデス / 艾克斯迪司 / Exdeath<br>
+<table class="table-style">
+<tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td><h2>1</h2></td><td><b>卡夫卡</b>會召喚小黃及小藍,兩個會分別給最近四名玩家debuff({umad_epic_hero_debuff}及{umad_fated_hero_debuff})。<br>只有帶其debuff的玩家能對其造成傷害。<br><br><b>西邊小黃誘導:</b> MT{job:umad_mt},H1{job:umad_h1},D1{job:umad_d1},D2{job:umad_d2}<br><b>東邊小藍誘導:</b> ST{job:umad_st},H2{job:umad_h2},D3{job:umad_d3},D4{job:umad_d4}</td><td><img src="assets/images/fight/ult-umad/p3-slide1.png" width=400></td></tr>
+<tr><td><h2>2</h2></td><td>分配debuff後，雙坦將小黃及小藍拉至場中並等待讀條生成三顆屬性水晶及分配另外兩組隨機debuff。<br><br>三個屬性水晶必定生成在三個斜點處，<b>風水晶</b>必定爲水及火水晶中間，以下機制主要<b>以風水晶爲基準</b>，水及火水晶有機會相反位置，如相反則<b>以風水晶基準</b>鏡像處理。<br><br>每人會獲得{umad_tailwind_debuff}或{umad_headwind_debuff}，將會在後續解釋及處理(第10頁)<br><br>然後其中一名坦補及一名DPS會獲得{umad_dynamic_fluid_debuff}，及另一名坦補及另一名DPS會獲得{umad_entropy_debuff}，時間一組長一組短。<br>此攻略將不解釋{umad_dynamic_fluid_debuff}{umad_entropy_debuff}debuff效果，按照站位站好即可。</td><td><img src="assets/images/fight/ult-umad/p3-slide2.png" width=400></td></tr>
+<tr><td><h2>3</h2></td><td>MT{job:umad_mt}將小黃拉到風水晶貼牆，ST{job:umad_st}則拉到風水晶對面。<br>D3及D4{job:umad_d3}{job:umad_d4}預備在水水晶側誘導。<br>D1及D2{job:umad_d1}{job:umad_d2}在風水晶場邊輸出<br>H1及H2{job:umad_h1}{job:umad_h2}如圖靠場中在小黃目標圈上站</td><td><img src="assets/images/fight/ult-umad/p3-slide3.png" width=400></td></tr>
+<tr><td><h2>4</h2></td><td>MT{job:umad_mt}將小黃拉完後便可回到補師位置，<br>ST{job:umad_st}在小藍開始讀條Thunder III時即可回到補師位置。<br><br>小王會發動大型鋼鐵AOE，同時第一組短debuff{umad_dynamic_fluid_debuff}或{umad_entropy_debuff}會如圖判定AOE，位置站好即無人死亡。</td><td><img src="assets/images/fight/ult-umad/p3-slide4a.png" data-case="火短的情況" width=400><img src="assets/images/fight/ult-umad/p3-slide4b.png" data-case="水短的情況" width=400></td></tr>
+<tr><td><h2>5</h2></td><td>AOE判定後，其後緊接小藍會對最近玩家造成兩次死刑傷害，<br>第一次由MT{job:umad_mt}減傷負責<br>H1及H2及ST{job:umad_h1}{job:umad_h2}{job:umad_st}要如圖走到場邊躲避，D3{job:umad_d3}亦要稍微遠離小藍。<br></td><td><img src="assets/images/fight/ult-umad/p3-slide5.png" width=400></td></tr>
+<tr><td><h2>6</h2></td><td>MT{job:umad_mt}負責後與ST{job:umad_st}換位，<br>ST{job:umad_st}開減傷處理。<br><br>處理完後，ST{job:umad_st}需要<b>將小藍拉到風水晶斜點位置，並令其面向場中</b>，位置需要儘量精準。<br><br>H1及H2及MT{job:umad_h1}{job:umad_h2}{job:umad_mt}可以回到原本位置預備處理下一個機制。</td><td><img src="assets/images/fight/ult-umad/p3-slide6.png" width=400></td></tr>
+<tr><td><h2>7</h2></td><td>小藍會預備隨機讀條，隨機先後進行對前後90度扇形及左右90度扇形。<br><br><b>ヴァーティカルインプロージョン/Longitude:</b> 先打前後，再打左右<br><b>ホリゾンタルインプロージョン/Latitude:</b> 先打左右，再打前後<br><br>依次躲避即可。<br>躲避完後預備回到一開始誘導位置處理第二次{umad_dynamic_fluid_debuff}或{umad_entropy_debuff}</td><td><img src="assets/images/fight/ult-umad/p3-slide7a.png" data-case="打前後" width=400><img src="assets/images/fight/ult-umad/p3-slide7b.png" data-case="打左右" width=400></td></tr>
+<tr><td><h2>8</h2></td><td>除ST{job:umad_st}以外7人跟第一次一樣站位，<br>ST{job:umad_st}跟坦補組站即可。<br>如圖處理</td><td><img src="assets/images/fight/ult-umad/p3-slide8a.png" data-case="火長的情況" width=400><img src="assets/images/fight/ult-umad/p3-slide8b.png" data-case="水長的情況" width=400></td></tr>
+<tr><td><h2>9</h2></td><td>雙坦確保小黃小藍都在風水晶位置，<br>D3{job:umad_d3}去風水晶對側誘導小黃，待小黃開始讀條<b>Umbra Smash</b>後立刻回到人羣。<br><br>同時小丑會生成八個分身依次在正點或斜點開始衝刺，需要觀察位置及次序處理後續麻將機制。</td><td><img src="assets/images/fight/ult-umad/p3-slide9.png" width=400></td></tr>
+<tr><td><h2>10</h2></td><td>小藍會對八人造成擊退，玩家需要處理一開始{umad_tailwind_debuff}或{umad_headwind_debuff}debuff，否則擊退力度會雙倍並被擊退出場外。<br><br>{umad_headwind_debuff}:需要背對小藍<br>{umad_tailwind_debuff}:需要面向小藍</td><td><img src="assets/images/fight/ult-umad/p3-slide10.png" width=400></td></tr>
+<tr><td><h2>11</h2></td><td>如圖處理麻將。</td><td><img src="assets/images/fight/ult-umad/p3-slide11.png" width=400></td></tr>
+<tr><td><h2>12</h2></td><td>麻將後，小藍會再次對最近一名玩家造成兩次死刑傷害，<br>由MT{job:umad_mt}無敵處理。</td><td><img src="assets/images/fight/ult-umad/p3-slide12.png" width=400></td></tr>
+<tr><td><h2>13</h2></td><td>小黃小黑會在最後再次分別給最近四名玩家debuff({umad_epic_hero_debuff}及{umad_fated_hero_debuff})，與開場分配一樣。<br><br><b>小黃誘導:</b> MT{job:umad_mt},H1{job:umad_h1},D1{job:umad_d1},D2{job:umad_d2}<br><b>小藍誘導:</b> ST{job:umad_st},H2{job:umad_h2},D3{job:umad_d3},D4{job:umad_d4}<br></td><td><img src="assets/images/fight/ult-umad/p3-slide13.png" width=400></td></tr>
+</table>`
+          },
+          "黑洞": {
+            tag: "blackhole",
             content: `待更`
           }
         }
