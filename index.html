@@ -867,7 +867,7 @@
     <div id="leaderboard-wrap" class="content-panel">
       <div class="lb-section-head">
         <span class="lb-section-title">篝火會/天ノ宮會</span>
-        <span class="lb-section-sub">由衷感謝曾在篝火處盤桓的友人們，紀錄每一個留下足跡的你。</span>
+        <span class="lb-section-sub">由衷感謝曾在篝火處盤桓的友人們，紀錄每一個留下足跡的你。惟朽木不可雕也，糞土之牆不可汙也。</span>
       </div>
       <div id="leaderboard-list"></div>
     </div>
@@ -1238,7 +1238,7 @@ let data = {
 <tr><td><h2>7</h2></td><td>小藍會預備隨機讀條，隨機先後進行對前後90度扇形及左右90度扇形。<br><br><b>ヴァーティカルインプロージョン/Longitude:</b> 先打前後，再打左右<br><b>ホリゾンタルインプロージョン/Latitude:</b> 先打左右，再打前後<br><br>依次躲避即可。<br>躲避完後預備回到一開始誘導位置處理第二次{umad_dynamic_fluid_debuff}或{umad_entropy_debuff}</td><td><img src="assets/images/fight/ult-umad/p3-slide7a.png" data-case="打前後" width=400><img src="assets/images/fight/ult-umad/p3-slide7b.png" data-case="打左右" width=400></td></tr>
 <tr><td><h2>8</h2></td><td>除ST{job:umad_st}以外7人跟第一次一樣站位，<br>ST{job:umad_st}跟坦補組站即可。<br>如圖處理</td><td><img src="assets/images/fight/ult-umad/p3-slide8a.png" data-case="火長的情況" width=400><img src="assets/images/fight/ult-umad/p3-slide8b.png" data-case="水長的情況" width=400></td></tr>
 <tr><td><h2>9</h2></td><td>雙坦確保小黃小藍都在風水晶位置，<br>D3{job:umad_d3}去風水晶對側誘導小黃，待小黃開始讀條<b>Umbra Smash</b>後立刻回到人羣。<br><br>同時小丑會生成八個分身依次在正點或斜點開始衝刺，需要觀察位置及次序處理後續麻將機制。</td><td><img src="assets/images/fight/ult-umad/p3-slide9.png" width=400></td></tr>
-<tr><td><h2>10</h2></td><td>小藍會對八人造成擊退，玩家需要處理一開始{umad_tailwind_debuff}或{umad_headwind_debuff}debuff，否則擊退力度會雙倍並被擊退出場外。<br><br>{umad_headwind_debuff}:需要背對小藍<br>{umad_tailwind_debuff}:需要面向小藍</td><td><img src="assets/images/fight/ult-umad/p3-slide10.png" width=400></td></tr>
+<tr><td><h2>10</h2></td><td>小藍會對八人造成擊退，玩家需要處理一開始{umad_tailwind_debuff}或{umad_headwind_debuff}debuff，否則擊退力度會雙倍並被擊退出場外。<br><br>{umad_headwind_debuff}:需要背對小藍<br>{umad_tailwind_debuff}:需要面向小藍<br><br>同時坦克需要開LB3，擊退後八人分攤風傷害再預備回到麻將站位。</td><td><img src="assets/images/fight/ult-umad/p3-slide10.png" width=400></td></tr>
 <tr><td><h2>11</h2></td><td>如圖處理麻將。</td><td><img src="assets/images/fight/ult-umad/p3-slide11.png" width=400></td></tr>
 <tr><td><h2>12</h2></td><td>麻將後，小藍會再次對最近一名玩家造成兩次死刑傷害，<br>由MT{job:umad_mt}無敵處理。</td><td><img src="assets/images/fight/ult-umad/p3-slide12.png" width=400></td></tr>
 <tr><td><h2>13</h2></td><td>小黃小黑會在最後再次分別給最近四名玩家debuff({umad_epic_hero_debuff}及{umad_fated_hero_debuff})，與開場分配一樣。<br><br><b>小黃誘導:</b> MT{job:umad_mt},H1{job:umad_h1},D1{job:umad_d1},D2{job:umad_d2}<br><b>小藍誘導:</b> ST{job:umad_st},H2{job:umad_h2},D3{job:umad_d3},D4{job:umad_d4}<br></td><td><img src="assets/images/fight/ult-umad/p3-slide13.png" width=400></td></tr>
@@ -1356,7 +1356,7 @@ const teamsData = {
       players: [
         { job: 'gnb', name: '芥末醬@奧汀' }, { job: 'pld', name: '野上良太郎@鳳凰' },
         { job: 'ast', name: '不雪@巴哈姆特' }, { job: 'sge', name: '最後武士@伊弗利特' },
-        { job: 'blm', name: 'Kouns@奧汀' }, { job: 'sam', name: '美式居合@利維坦' },
+        { job: 'blm', name: 'Kouns@奧汀' }, { job: 'sam', name: '-' },
         { job: 'dnc', name: '一隻牛@鳳凰' }, { job: 'smn', name: '一隻熊@鳳凰' },
       ]
     },
@@ -1366,7 +1366,7 @@ const teamsData = {
       players: [
         { job: 'drk', name: 'Azs@巴哈姆特' }, { job: 'pld', name: 'Wing@伊弗利特' },
         { job: 'ast', name: '不雪@巴哈姆特' }, { job: 'sge', name: '最後武士@伊弗利特' },
-        { job: 'rdm', name: '傳說的貓公主@巴哈姆特' }, { job: 'sam', name: '古麻友希@利維坦' },
+        { job: 'rdm', name: '傳說的貓公主@巴哈姆特' }, { job: 'sam', name: '-' },
         { job: 'dnc', name: '牙橙@伊弗利特' }, { job: 'blm', name: '魚丸探長@鳳凰' },
       ]
     },
@@ -1376,7 +1376,7 @@ const teamsData = {
       players: [
         { job: 'drk', name: 'Hiroin Alter @Durandal' }, { job: 'pld', name: 'Wing Wing @Bahamut' },
         { job: 'whm', name: 'Akari Sen @Bahamut' }, { job: 'sch', name: 'Eunisl Kireina @Lamia' },
-        { job: 'smn', name: 'Blaha Evans @Marilith' }, { job: 'sam', name: 'Light Dumb @Typhon' },
+        { job: 'smn', name: 'Blaha Evans @Marilith' }, { job: 'sam', name: '-' },
         { job: 'dnc', name: 'Lin Aria @Bahamut' }, { job: 'blm', name: "Chi' Yu @Bahamut" },
       ]
     },
