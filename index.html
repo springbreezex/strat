@@ -934,6 +934,9 @@ const replacementDict = {
   "{umad_accretion_debuff}": '<img src="assets/images/fight/ult-umad/accretion.png" style="height:20px;vertical-align:middle;">',
   "{umad_fated_hero_debuff}": '<img src="assets/images/fight/ult-umad/fated_hero.png" style="height:20px;vertical-align:middle;">',
   "{umad_epic_hero_debuff}": '<img src="assets/images/fight/ult-umad/epic_hero.png" style="height:20px;vertical-align:middle;">',
+  "{umad_fil_debuff}": '<img src="assets/images/fight/ult-umad/fil.png" style="height:20px;vertical-align:middle;">',
+  "{umad_sil_debuff}": '<img src="assets/images/fight/ult-umad/sil.png" style="height:20px;vertical-align:middle;">',
+  "{umad_til_debuff}": '<img src="assets/images/fight/ult-umad/til.png" style="height:20px;vertical-align:middle;">',
 };
 
 function applyReplacements(html) {
@@ -1242,11 +1245,60 @@ let data = {
 <tr><td><h2>11</h2></td><td>如圖處理麻將。</td><td><img src="assets/images/fight/ult-umad/p3-slide11.png" width=400></td></tr>
 <tr><td><h2>12</h2></td><td>麻將後，小藍會再次對最近一名玩家造成兩次死刑傷害，<br>由MT{job:umad_mt}無敵處理。</td><td><img src="assets/images/fight/ult-umad/p3-slide12.png" width=400></td></tr>
 <tr><td><h2>13</h2></td><td>小黃小黑會在最後再次分別給最近四名玩家debuff({umad_epic_hero_debuff}及{umad_fated_hero_debuff})，與開場分配一樣。<br><br><b>小黃誘導:</b> MT{job:umad_mt},H1{job:umad_h1},D1{job:umad_d1},D2{job:umad_d2}<br><b>小藍誘導:</b> ST{job:umad_st},H2{job:umad_h2},D3{job:umad_d3},D4{job:umad_d4}<br></td><td><img src="assets/images/fight/ult-umad/p3-slide13.png" width=400></td></tr>
+
 </table>`
           },
-          "黑洞": {
+          "黑洞 (DSA Double)": {
             tag: "blackhole",
-            content: `待更`
+            content: `
+<b>機制詳解:</b> <br>
+此階段需要處理四個機制，分別爲可目標的雙體對象(小黃，小藍)，場外非目標對象(巨型小丑)，及場地黑洞機制。<br>
+此攻略會先說明每個分開機制，再整合說明流程<br><br>
+爲方便解釋，以下爲部分名詞簡稱:<br>
+<b>小黃</b> - カオス / 混沌 / Chaos<br>
+<b>小藍</b> - エクスデス / 艾克斯迪司 / Exdeath<br>
+<b>小丑</b> - 場外卡夫卡<br>
+<table class="table-style">
+<tbody><tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td>小黃</td><td><b>亂打</b><br>ダビングイーディクト / Damning Edict<br>小黃會面向隨機一名玩家，並對前方進行半場AOE，留意面向躲避即可。<br><br><b>前後/左右擊<br></b>根據讀條進行兩次扇形攻擊:<br><b>ヴァーティカルインプロージョン/Longitude:</b> 先打前後，再打左右<br><b>ホリゾンタルインプロージョン/Latitude:</b> 先打左右，再打前後<br>跟前半決鬥一樣，躲避即可。</td><td><img src="assets/images/fight/ult-umad/p3-bh-chaos1.png" data-case="亂打" width="400"><img src="assets/images/fight/ult-umad/p3-bh-chaos2a.png" data-case="前後擊" width="400"><img src="assets/images/fight/ult-umad/p3-bh-chaos2b.png" data-case="左右擊" width="400"></td></tr>
+<tr><td>小藍</td><td><b>坦死刑</b><br>サンダガ / Thunder III<br>小藍會連續兩次對最近距離的坦克進行死刑攻擊。</td><td><img src="assets/images/fight/ult-umad/p3-bh-exdeath.png" data-case="死刑" width="400"></td></tr>
+<tr><td>小丑</td><td><b>舉手拍拍拍</b><br>ビンビンビンタ / 連掌扇形拍擊 / Slap Happy<br>小丑會舉左右手，並對該側半場進行三次AOE拍地板。<br>同時中間會有鋼鐵AOE及 根據舉起的手進行 <b>8人分攤或職能散開</b> (以小丑爲北THD)<br><b>舉左手:</b> 在左側安地進行職能散開(以小丑爲北THD)<br><b>舉右手:</b> 在右側安地進行8人分攤<br><br><b>平躺</b><br>ありのままのボクチン / Look Upon Me<br>小丑會跳到場中平躺，如圖進行直線AOE，躲避即可。</td><td><img src="assets/images/fight/ult-umad/p3-bh-kefkaL.png" data-case="舉手拍拍拍(左)" width="400"><img src="assets/images/fight/ult-umad/p3-bh-kefkaR.png" data-case="舉手拍拍拍(右)" width="400"><img src="assets/images/fight/ult-umad/p3-bh-kefkaslam.png" data-case="平躺" width="400"></td></tr>
+<tr><td>黑洞</td><td>場上會生成若干數量的<b>黑洞</b>，避免碰到否則會得到Damage Down效果。<br>同時其中1-3個正點黑洞會生成一條連接到玩家的線(可轉讓)，<br>玩家要根據自己的數字{umad_fil_debuff}{umad_sil_debuff}{umad_til_debuff}debuff及是否持有{umad_accretion_debuff}debuff決定取線次序。<br>流程解說會說明如何判定自己取線次序。<br><br>整個機制會有24條線，每名玩家會在整個機制中先後接3次線處理。</td><td><img src="assets/images/fight/ult-umad/p3-bh-blackholes.png" data-case="黑洞" width="400"></td></tr>
+</tbody></table>
+<br><br>
+<b>流程解說:</b> <br>
+<table class="table-style">
+<tbody><tr><th></th><th>解說</th><th>圖例</th></tr>
+<tr><td><h2>1</h2></td><td>分配debuff後，再一次坦死刑，本次死刑換坦。<br>第一次由ST{job:umad_st}減傷負責。<br>第二次由MT{job:umad_mt}減傷負責。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide1a.png" data-case="ST先接" width="400"><img src="assets/images/fight/ult-umad/p3-bh-slide1b.png" data-case="MT後接" width="400"></td></tr>
+<tr><td><h2>1</h2></td><td>黑洞機制會分爲3組:<br><b>Debuff組:</b> 持有{umad_accretion_debuff}debuff (固定1個補師+1個DPS)<br><b>DPS組:</b> 剩餘三人<br><b>坦補組:</b> 雙坦+剩餘補師<br><br>辨別自己的分組及留意自己的數字{umad_fil_debuff}{umad_sil_debuff}{umad_til_debuff}，根據次序表負責自己需要接的線。<br>黑洞出三條線的輪次時，會以小丑爲北順時針分配:<br><b>第一條: </b>DPS組<br><b>第二條:</b> 坦補組<br><b>第三條: </b>Debuff組<br><br>注意: 每人都會有{umad_primordial_crust_debuff}，與{umad_accretion_debuff}不一樣。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide2a.png" data-case="分組方法" width="400"><img src="assets/images/fight/ult-umad/p3-bh-slide2b.png" data-case="接線次序" width="400"></td></tr>
+<tr><td><h2>2</h2></td><td>小丑會隨機跳到場邊正點/斜點位置並進行<b>小丑舉手拍拍拍</b>。<br></td><td><img src="assets/images/fight/ult-umad/p3-bh-kefkaL.png" data-case="舉手拍拍拍(左)" width="400"><img src="assets/images/fight/ult-umad/p3-bh-kefkaR.png" data-case="舉手拍拍拍(右)" width="400"></td></tr>
+<tr><td><h2>3</h2></td><td>小丑舉手拍拍拍後，會生成黑洞。<br>如圖由<b>坦補組一號</b>處理<b>第一組接線</b>，接線的人順時針拉遠人羣。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide3.png" width="400"></td></tr>
+<tr><td><h2>4</h2></td><td>第一組線結束後，會出現<b>第二組線</b>(兩條)，由<b>DPS組一號</b>處理第二組線，接線的人離遠人羣避免噴到人羣。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide4.png" width="400"></td></tr>
+<tr><td><h2>5</h2></td><td>小丑會隨機跳到新的場邊正點/斜點位置，<br>同時小藍會讀條死刑，由ST{job:umad_st}無敵處理兩次死刑。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide5.png" width="400"></td></tr>
+<tr><td><h2>6</h2></td><td>留意小黃<b>亂打</b>，並觀察小丑位置，預備處理<b>小丑舉手拍拍拍。</b></td><td><img src="assets/images/fight/ult-umad/p3-bh-slide6.png" width="400"></td></tr>
+<tr><td><h2>7</h2></td><td>亂打後立刻處理<b>小丑舉手拍拍拍</b></td><td><img src="assets/images/fight/ult-umad/p3-bh-kefkaL.png" data-case="舉手拍拍拍(左)" width="400"><img src="assets/images/fight/ult-umad/p3-bh-kefkaR.png" data-case="舉手拍拍拍(右)" width="400"></td></tr>
+<tr><td><h2>8</h2></td><td>出現<b>第三組線</b>(三條)，由DPS組一號，坦補組一號，Debuff組一號，處理第三組線，<br>接線的人順時針拉遠離遠人羣，並避免噴到其他人。<br><br>會以小丑爲北順時針分配:<br><b>第一條:</b> DPS組<br><b>第二條:</b> 坦補組<br><b>第三條:</b> Debuff組</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide8.png" width="400"></td></tr>
+<tr><td><h2>9</h2></td><td>第三組線噴射後不會消失，並接着處理<b>第四組線</b>。<br><b>DPS組二號</b> 與 <b>DPS組一號&nbsp;</b>換位。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide9.png" width="400"></td></tr>
+<tr><td><h2>10</h2></td><td>第四組線噴射後不會消失，並接着處理<b>第五組線</b>。<br><b>坦補組二號</b> 與 坦補組一號 換位。<br><br>同時小丑會隨機跳到新的場邊正點/斜點位置。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide10.png" width="400"></td></tr>
+<tr><td><h2>11</h2></td><td>留意小黃<b>亂打</b>，並觀察小丑位置，預備處理小丑<b>平躺</b>。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide11.png" width="400"></td></tr>
+<tr><td><h2>12</h2></td><td>亂打後立刻躲避小丑<b>平躺</b></td><td><img src="assets/images/fight/ult-umad/p3-bh-slide12.png" width="400"></td></tr>
+<tr><td><h2>13</h2></td><td>再一次坦死刑，本次死刑換坦。<br>第一次由ST{job:umad_st}減傷負責。<br>第二次由MT{job:umad_mt}減傷負責。<br><br>其餘人遠離小藍位置。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide13a.png" data-case="ST先接" width="400"><img src="assets/images/fight/ult-umad/p3-bh-slide13b.png" data-case="MT後接" width="400"></td></tr>
+<tr><td><h2>14</h2></td><td>出現<b>第六組線</b>(三條)，由DPS組二號，坦補組二號，Debuff組二號，處理第六組線，<br>接線的人順時針拉遠離遠人羣，並避免噴到其他人。<br><br>會以小丑爲北順時針分配:<br>第一條: DPS組<br>第二條: 坦補組<br>第三條: Debuff組</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide14.png" width="400"></td></tr>
+<tr><td><h2>15</h2></td><td>第六組線噴射後不會消失，並接着處理<b>第七組線</b>。<br><b>DPS組三號</b> 與 DPS組二號 換位。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide15.png" width="400"></td></tr>
+<tr><td><h2>16</h2></td><td>第七組線噴射後不會消失，並接着處理<b>第八組線</b>。<br><b>坦補組三號</b> 與 坦補組二號 換位。<br><br>同時小丑會隨機跳到新的場邊正點/斜點位置。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide16.png" width="400"></td></tr>
+<tr><td><h2>17</h2></td><td>預備觀察小黃讀條<b>前後/左右擊</b>，同時觀察小丑位置及動作，預備處理小丑舉手拍拍拍。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide17a.png" data-case="前後" width="400"><img src="assets/images/fight/ult-umad/p3-bh-slide17b.png" data-case="左右" width="400"></td></tr>
+<tr><td><h2>18</h2></td><td>前後/左右擊後立刻處理<b>小丑舉手拍拍拍</b></td><td><img src="assets/images/fight/ult-umad/p3-bh-kefkaL.png" data-case="舉手拍拍拍(左)" width="400"><img src="assets/images/fight/ult-umad/p3-bh-kefkaR.png" data-case="舉手拍拍拍(右)" width="400"></td></tr>
+<tr><td><h2>19</h2></td><td>小丑會隨機跳到新的場邊正點/斜點位置。<br><br>同時出現<b>第九組線</b>(兩條)，由<b>坦補組三號</b>處理第六組線，接線的人離遠人羣避免噴到人羣。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide19.png" width="400"></td></tr>
+<tr><td><h2>20</h2></td><td>第九組線噴射後會消失，並重新出現<b>第十組線</b>，由<b>DPS組三號</b>處理。<br><br>同時<b>小丑平躺</b>，人羣躲避即可，DPS組三號將線拉往場邊避免噴到人羣。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide20.png" width="400"></td></tr>
+<tr><td><h2>21</h2></td><td>黑洞處理結束，小丑會跳到場中漂浮並看向隨機方向。<br>以小丑面向爲南：<br><b>坦補組</b>北邊預備誘導圓形AOE<br><b>DPS組</b>南邊預備誘導圓形AOE</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide21.png" width="400"></td></tr>
+<tr><td><h2>22</h2></td><td>誘導完後，<br><b>MT組</b>往西邊(白色鞋)誘導第二組圓形AOE，<br><b>ST組</b>往東邊(黑色鞋)誘導第二組圓形AOE。<br><br>同時會有分攤標記在坦補組或DPS組出現，觀察並預備處理分攤或踩塔。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide22.png" width="400"></td></tr>
+<tr><td><h2>23</h2></td><td>分攤職能組到場中預備分攤(儘量貼近場中心)，<br>沒有分攤組則負責處理2人塔。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide23.png" width="400"></td></tr>
+<tr><td><h2>24</h2></td><td>踩塔組判定後往場中預備第二次分攤，<br>分攤組判定後則負責第二次2人塔。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide24.png" width="400"></td></tr>
+<tr><td><h2>25</h2></td><td>最後小黃會對分攤位置再進行一次圓形AOE，全員遠離中間。<br>小藍會讀條冰凍，保持移動即可。</td><td><img src="assets/images/fight/ult-umad/p3-bh-slide25.png" width="400"></td></tr>
+
+
+</tbody></table>
+`
           }
         }
       },
